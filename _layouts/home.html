@@ -1,0 +1,48 @@
+---
+layout: default
+---
+<section class="hero">
+  <span class="hero-eyebrow">{{ site.tagline }}</span>
+  <h1 class="hero-title">
+    <span class="hero-title-prompt">$</span> {{ site.author.name | downcase }}
+  </h1>
+  <p class="hero-tagline">
+    Entry-level security professional building hands-on experience across offensive testing, blue team detection, and Active Directory attacks. Methodology-first writeups, beginner-friendly explanations, and zero room answers.
+  </p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{{ '/labs/' | relative_url }}">Browse Labs</a>
+    <a class="btn" href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
+    <a class="btn" href="https://www.linkedin.com/in/{{ site.author.linkedin }}/" target="_blank" rel="noopener">LinkedIn</a>
+    <a class="btn" href="https://tryhackme.com/p/{{ site.author.tryhackme }}" target="_blank" rel="noopener">TryHackMe</a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Recent Labs</h2>
+      <p class="section-subtitle">Latest writeups from CTF rooms, vulnerable VMs, and blue team investigations.</p>
+    </div>
+
+    {% assign recent_labs = site.labs | sort: 'date' | reverse | slice: 0, 6 %}
+    <ul class="lab-grid">
+      {% for lab in recent_labs %}
+      <li class="lab-card" data-category="{{ lab.category }}">
+        <div class="lab-card-meta">
+          <span class="tag tag-platform">{{ lab.platform }}</span>
+          {% if lab.difficulty %}<span class="tag tag-difficulty-{{ lab.difficulty | downcase }}">{{ lab.difficulty }}</span>{% endif %}
+          <span class="tag tag-category-{{ lab.category }}">{{ lab.category | replace: '-', ' ' }}</span>
+        </div>
+        <h3 class="lab-card-title"><a href="{{ lab.url | relative_url }}">{{ lab.title }}</a></h3>
+        <p class="lab-card-date">{{ lab.date | date: "%b %-d, %Y" }}</p>
+        <p class="lab-card-summary">{{ lab.summary }}</p>
+        <a class="lab-card-link" href="{{ lab.url | relative_url }}">Read writeup</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <div style="text-align:center; margin-top: 2.5em;">
+      <a class="btn" href="{{ '/labs/' | relative_url }}">View all labs</a>
+    </div>
+  </div>
+</section>

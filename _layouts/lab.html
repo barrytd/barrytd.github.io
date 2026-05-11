@@ -1,0 +1,23 @@
+---
+layout: default
+---
+<article>
+  <header class="lab-header">
+    <div class="lab-header-meta">
+      <span class="tag tag-platform">{{ page.platform }}</span>
+      {% if page.difficulty %}<span class="tag tag-difficulty-{{ page.difficulty | downcase }}">{{ page.difficulty }}</span>{% endif %}
+      <span class="tag tag-category-{{ page.category }}">{{ page.category | replace: '-', ' ' }}</span>
+      <span class="tag">{{ page.date | date: "%b %-d, %Y" }}</span>
+    </div>
+    <h1 class="lab-header-title">{{ page.title }}</h1>
+    {% if page.summary %}<p class="lab-header-summary">{{ page.summary }}</p>{% endif %}
+  </header>
+
+  <div class="lab-content">
+    {{ content }}
+  </div>
+
+  <nav class="lab-footer-nav">
+    <a href="{{ '/labs/' | relative_url }}">← Back to all labs</a>
+  </nav>
+</article>

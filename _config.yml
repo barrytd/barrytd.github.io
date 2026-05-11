@@ -1,22 +1,42 @@
 title: Robert Perez
-subtitle: Security Lab Notes
-email: r.perezpereda01@gmail.com
+tagline: Security Lab Notes
 description: >-
-  Hands-on offensive and blue team writeups from CTFs, lab environments, and home-built networks.
-  Beginner friendly, methodology first, no flags or room answers.
-baseurl: ""
+  Hands-on offensive and blue team security writeups from CTFs, lab environments,
+  and home-built networks. Beginner friendly, methodology first, no flags or
+  room answers.
+
+author:
+  name: Robert Perez
+  github: barrytd
+  linkedin: robert-perezpereda
+  tryhackme: bxrry
+
 url: "https://barrytd.github.io"
-github_username: barrytd
+baseurl: ""
 
-theme: minima
-minima:
-  skin: dark
-  date_format: "%b %-d, %Y"
-  social_links:
-    - { platform: github, user_url: "https://github.com/barrytd" }
-    - { platform: linkedin, user_url: "https://www.linkedin.com/in/robert-perezpereda/" }
+# Disable theme - we ship our own layouts and CSS.
+theme: null
 
-permalink: /:year/:month/:day/:title/
+# Custom labs collection for the writeup pages.
+collections:
+  labs:
+    output: true
+    permalink: /labs/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: labs
+    values:
+      layout: lab
+
+# Syntax highlighter shipped by GitHub Pages.
+highlighter: rouge
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+
+permalink: /:title/
 timezone: America/New_York
 
 plugins:
@@ -24,12 +44,9 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-header_pages:
-  - about.md
-
 exclude:
   - Gemfile
   - Gemfile.lock
+  - README.md
   - vendor/
   - node_modules/
-  - README.md

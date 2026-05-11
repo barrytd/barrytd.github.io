@@ -1,0 +1,16 @@
+<header class="site-nav">
+  <div class="nav-container">
+    <a href="{{ '/' | relative_url }}" class="nav-brand">
+      <span class="nav-brand-prompt">$_</span>
+      <span class="nav-brand-name">robert perez</span>
+    </a>
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'false'); document.querySelector('.nav-links').classList.toggle('open');">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links">
+      <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">Home</a>
+      <a href="{{ '/labs/' | relative_url }}" class="nav-link {% if page.url contains '/labs' %}active{% endif %}">Labs</a>
+      <a href="{{ '/about/' | relative_url }}" class="nav-link {% if page.url contains '/about' %}active{% endif %}">About</a>
+    </nav>
+  </div>
+</header>

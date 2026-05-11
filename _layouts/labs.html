@@ -1,0 +1,55 @@
+---
+layout: default
+---
+<section class="page-header">
+  <h1 class="page-header-title">{{ page.title }}</h1>
+  {% if page.subtitle %}<p class="page-header-subtitle">{{ page.subtitle }}</p>{% endif %}
+</section>
+
+<section class="page-content">
+  <div class="container">
+    <div class="lab-filter">
+      <button class="lab-filter-btn active" data-filter="all">All</button>
+      <button class="lab-filter-btn" data-filter="offensive">Offensive</button>
+      <button class="lab-filter-btn" data-filter="blue-team">Blue Team</button>
+    </div>
+
+    {% assign all_labs = site.labs | sort: 'date' | reverse %}
+    <ul class="lab-grid" id="lab-grid">
+      {% for lab in all_labs %}
+      <li class="lab-card" data-category="{{ lab.category }}">
+        <div class="lab-card-meta">
+          <span class="tag tag-platform">{{ lab.platform }}</span>
+          {% if lab.difficulty %}<span class="tag tag-difficulty-{{ lab.difficulty | downcase }}">{{ lab.difficulty }}</span>{% endif %}
+          <span class="tag tag-category-{{ lab.category }}">{{ lab.category | replace: '-', ' ' }}</span>
+        </div>
+        <h3 class="lab-card-title"><a href="{{ lab.url | relative_url }}">{{ lab.title }}</a></h3>
+        <p class="lab-card-date">{{ lab.date | date: "%b %-d, %Y" }}</p>
+        <p class="lab-card-summary">{{ lab.summary }}</p>
+        <a class="lab-card-link" href="{{ lab.url | relative_url }}">Read writeup</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+<script>
+  (function () {
+    var buttons = document.querySelectorAll('.lab-filter-btn');
+    var cards = document.querySelectorAll('#lab-grid .lab-card');
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        buttons.forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        var filter = btn.getAttribute('data-filter');
+        cards.forEach(function (card) {
+          if (filter === 'all' || card.getAttribute('data-category') === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+</script>
