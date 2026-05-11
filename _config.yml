@@ -1,0 +1,35 @@
+title: Robert Perez
+subtitle: Security Lab Notes
+email: r.perezpereda01@gmail.com
+description: >-
+  Hands-on offensive and blue team writeups from CTFs, lab environments, and home-built networks.
+  Beginner friendly, methodology first, no flags or room answers.
+baseurl: ""
+url: "https://barrytd.github.io"
+github_username: barrytd
+
+theme: minima
+minima:
+  skin: dark
+  date_format: "%b %-d, %Y"
+  social_links:
+    - { platform: github, user_url: "https://github.com/barrytd" }
+    - { platform: linkedin, user_url: "https://www.linkedin.com/in/robert-perezpereda/" }
+
+permalink: /:year/:month/:day/:title/
+timezone: America/New_York
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+header_pages:
+  - about.md
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor/
+  - node_modules/
+  - README.md
