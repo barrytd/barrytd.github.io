@@ -1,19 +1,39 @@
 ---
 layout: default
 ---
+{% assign all_labs = site.labs %}
+{% assign offensive_count = site.labs | where: "category", "offensive" | size %}
+{% assign blue_count = site.labs | where: "category", "blue-team" | size %}
+{% assign total_count = all_labs | size %}
+
 <section class="hero">
   <span class="hero-eyebrow">{{ site.tagline }}</span>
   <h1 class="hero-title">
     <span class="hero-title-prompt">$</span> {{ site.author.name | downcase }}
   </h1>
   <p class="hero-tagline">
-    Entry-level security professional building hands-on experience across offensive testing, blue team detection, and Active Directory attacks. Methodology-first writeups, beginner-friendly explanations, and zero room answers.
+    Entry-level security professional building hands-on experience across offensive testing, blue team detection, and Active Directory attacks. Methodology-focused write-ups with no spoilers, written for beginners and curious recruiters.
   </p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="{{ '/labs/' | relative_url }}">Browse Labs</a>
     <a class="btn" href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
     <a class="btn" href="https://www.linkedin.com/in/{{ site.author.linkedin }}/" target="_blank" rel="noopener">LinkedIn</a>
     <a class="btn" href="https://tryhackme.com/p/{{ site.author.tryhackme }}" target="_blank" rel="noopener">TryHackMe</a>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-number">{{ total_count }}</span>
+      <span class="stat-label">labs completed</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">{{ offensive_count }}<span class="stat-divider">/</span>{{ blue_count }}</span>
+      <span class="stat-label">offensive / defensive</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number">2026</span>
+      <span class="stat-label">actively building</span>
+    </div>
   </div>
 </section>
 
@@ -43,6 +63,73 @@ layout: default
 
     <div style="text-align:center; margin-top: 2.5em;">
       <a class="btn" href="{{ '/labs/' | relative_url }}">View all labs</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-skills">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Skills &amp; Tools</h2>
+      <p class="section-subtitle">A quick snapshot for recruiters. Full bio and certifications live on the <a href="{{ '/about/' | relative_url }}">about page</a>.</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skills-card">
+        <h3 class="skills-card-title"><span class="skills-card-dot skills-dot-red"></span>Offensive Security</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Nmap</span>
+          <span class="skill-tag">Burp Suite</span>
+          <span class="skill-tag">Hydra</span>
+          <span class="skill-tag">Metasploit</span>
+          <span class="skill-tag">Impacket</span>
+          <span class="skill-tag">BloodHound</span>
+          <span class="skill-tag">mimikatz</span>
+          <span class="skill-tag">Responder</span>
+          <span class="skill-tag">GTFOBins</span>
+          <span class="skill-tag">John the Ripper</span>
+          <span class="skill-tag">hashcat</span>
+        </div>
+      </div>
+
+      <div class="skills-card">
+        <h3 class="skills-card-title"><span class="skills-card-dot skills-dot-green"></span>Blue Team &amp; Detection</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Splunk</span>
+          <span class="skill-tag">Kibana / ELK</span>
+          <span class="skill-tag">Wireshark</span>
+          <span class="skill-tag">Sysmon</span>
+          <span class="skill-tag">Windows EID 4688</span>
+          <span class="skill-tag">MITRE ATT&amp;CK</span>
+          <span class="skill-tag">SPL</span>
+          <span class="skill-tag">phishing triage</span>
+          <span class="skill-tag">LOLBin hunting</span>
+        </div>
+      </div>
+
+      <div class="skills-card">
+        <h3 class="skills-card-title"><span class="skills-card-dot skills-dot-blue"></span>Languages &amp; Platforms</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">PowerShell</span>
+          <span class="skill-tag">Bash</span>
+          <span class="skill-tag">Linux</span>
+          <span class="skill-tag">Active Directory</span>
+          <span class="skill-tag">Windows Server</span>
+        </div>
+      </div>
+
+      <div class="skills-card">
+        <h3 class="skills-card-title"><span class="skills-card-dot skills-dot-orange"></span>Certifications</h3>
+        <div class="skill-tags">
+          <span class="skill-tag">CompTIA Security+</span>
+          <span class="skill-tag">CompTIA Network+</span>
+          <span class="skill-tag">CompTIA A+</span>
+          <span class="skill-tag">CompTIA Project+</span>
+          <span class="skill-tag">ITIL 4 Foundation</span>
+        </div>
+        <p class="skills-card-footnote">B.S. Cybersecurity &amp; Information Assurance, WGU (Dec 2026)</p>
+      </div>
     </div>
   </div>
 </section>
