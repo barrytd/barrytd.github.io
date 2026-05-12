@@ -521,6 +521,16 @@ pre code {
   color: inherit;
   text-decoration: none;
 }
+/* The title link expands via ::before to cover the entire card, making
+   the whole card clickable. Other interactive items (the read-writeup
+   link) use a higher z-index to stay independently clickable. */
+.lab-card-title a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: var(--radius-lg);
+}
 .lab-card-title a:hover { color: var(--red); }
 .lab-card[data-category="blue-team"] .lab-card-title a:hover { color: var(--accent); }
 
