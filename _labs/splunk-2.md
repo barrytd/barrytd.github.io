@@ -2,7 +2,7 @@
 title: "My First SIEM Investigation - What I Learned Working Through BOTSv2 in Splunk"
 date: 2026-05-12
 platform: TryHackMe
-difficulty: Hard
+difficulty: Medium
 category: blue-team
 summary: "Three days inside the BOTSv2 dataset on TryHackMe's Splunk 2 room. Four scenarios, one fake brewery. Notes on what clicked and what didn't."
 ---
