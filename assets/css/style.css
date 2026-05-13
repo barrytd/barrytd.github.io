@@ -704,6 +704,15 @@ pre code {
 
 .lab-content ul, .lab-content ol { padding-left: 1.4em; }
 
+.lab-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.5em auto;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+}
+
 .lab-footer-nav {
   max-width: var(--max-prose);
   margin: 0 auto;
