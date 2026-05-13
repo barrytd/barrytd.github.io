@@ -84,7 +84,7 @@ Four queries. Each one needed one value from the previous one. Find a thread, fo
 
 ## What I'd Tell A Beginner
 
-1. Block three days.
+1. Expect to work for several days depending on experience.
 2. Run the sourcetype metadata query first.
 3. Keep a scratch file with every pivot value (username, IP, hostname, email, hash, domain, filename) under per-scenario section headers.
 4. Install `fonts-noto-cjk` on Kali before you start.
