@@ -23,6 +23,7 @@ This site is the **plain-English companion** to my [security-lab-portfolio](http
 - CompTIA **Network+**
 - CompTIA **A+**
 - CompTIA **Project+**
+- **LPI Linux Essentials**
 - **ITIL 4 Foundation**
 
 ## What I Work With
