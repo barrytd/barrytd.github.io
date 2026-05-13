@@ -73,6 +73,30 @@ Four queries. Each one needed one value from the previous one. Find a thread, fo
 - **TryHackMe's answer form rejected raw Unicode.** I had to run the Korean characters through CyberChef's *Unescape Unicode Characters* before pasting.
 - **VirusTotal exposes document metadata.** The *Details* tab on a submitted Office or PDF shows embedded *Author* and *Last Modified By* fields. Real attackers strip these. Lab samples often do not.
 
+## Mapping Findings To Frameworks
+
+The end of the lab asks the analyst to translate raw findings into two industry-standard frameworks. Most beginner walkthroughs skip this part. It is the part senior analysts spend most of their time on, because frameworks are how investigations get communicated to leadership and threat-intel partners.
+
+### Diamond Model
+
+The Diamond Model has four corners: **Adversary**, **Capability**, **Infrastructure**, **Victim**. Two axes connect them: the **socio-political axis** (the *why*) and the **technical axis** (the *how*).
+
+For the Taedonggang APT scenario:
+
+![Diamond Model for the Taedonggang APT campaign]({{ "/assets/images/splunk-2/splunk-diamond-model.png" | relative_url }})
+
+The model forced me out of the SIEM. Questions like *who is the adversary* and *what are they trying to gain* are answered with open-source intelligence and threat-intel pivots, not SPL.
+
+### MITRE ATT&CK
+
+MITRE ATT&CK is the standard taxonomy of attacker tactics and techniques. Each column is a tactic (Initial Access, Execution, Persistence, etc.). Each cell is a technique.
+
+The room provides a pre-marked matrix showing the techniques the campaign used:
+
+![ATT&CK matrix with Taedonggang campaign techniques highlighted]({{ "/assets/images/splunk-2/splunk-mitre-attack.png" | relative_url }})
+
+Mapping findings to technique IDs makes detection engineering follow logically. Each highlighted technique points at a known set of detection rules, telemetry sources, and mitigations. It also enables campaign comparison: a future intrusion with the same technique fingerprint can be flagged as a likely follow-up from the same group.
+
 ## General Lessons
 
 - Keyword search is the wrong first move. Sourcetype enumeration is the right first move.
