@@ -52,8 +52,6 @@ Every step in an investigation uses a value from the previous step. Insider thre
 3. Filter to the suspicious site, list URIs.
 4. Query *stream:smtp* with the user's email to get sender, recipient, subject, attachments.
 
-Four queries. Each one needed one value from the previous one. Find a thread, follow it through the data sources, write down each pivot value, move on.
-
 ## Things That Clicked
 
 - **Curly braces in field names mean multi-value.** `attach_filename{}`, `query{}`. Emails have multiple attachments, DNS records have multiple answers. Forget the braces, get blank results.
