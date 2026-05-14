@@ -41,7 +41,7 @@ Reads as: look at HTTP records in the botsv2 index, group by source IP and count
 
 This is not a search. It is a menu. It returns every sourcetype in the index. I saw `pan:traffic`, `stream:http`, `stream:smtp`, `stream:dns`, `stream:ftp`, `stream:tcp`, `osquery`, `XmlWinEventLog`, `WinRegistry`, and many more.
 
-Without this menu I was keyword-spamming. With it I was running targeted pivots.
+I run this on every new index before writing the first search.
 
 ## The Pivoting Rhythm
 
