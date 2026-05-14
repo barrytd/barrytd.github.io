@@ -9,5 +9,38 @@
     {{ content }}
   </main>
   {% include footer.html %}
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" aria-label="Close" type="button">×</button>
+    <img class="lightbox-image" alt="">
+  </div>
+
+  <script>
+    (function () {
+      var overlay = document.getElementById('lightbox');
+      if (!overlay) return;
+      var img = overlay.querySelector('.lightbox-image');
+      var close = function () {
+        overlay.classList.remove('open');
+        overlay.setAttribute('aria-hidden', 'true');
+        img.src = '';
+      };
+      var open = function (el) {
+        img.src = el.currentSrc || el.src;
+        img.alt = el.alt || '';
+        overlay.classList.add('open');
+        overlay.setAttribute('aria-hidden', 'false');
+      };
+      document.querySelectorAll('.lab-content img, .page-content img').forEach(function (el) {
+        el.addEventListener('click', function () { open(el); });
+      });
+      overlay.addEventListener('click', function (e) {
+        if (e.target === overlay || e.target.classList.contains('lightbox-close')) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && overlay.classList.contains('open')) close();
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -91,11 +91,57 @@ The model forced me out of the SIEM. Questions like *who is the adversary* and *
 
 MITRE ATT&CK is the standard taxonomy of attacker tactics and techniques. Each column is a tactic (Initial Access, Execution, Persistence, etc.). Each cell is a technique.
 
-The room provides a pre-marked matrix showing the techniques the campaign used:
+The room provides a pre-marked matrix showing the techniques the campaign used. Click to enlarge:
 
 ![ATT&CK matrix with Taedonggang campaign techniques highlighted]({{ "/assets/images/splunk-2/splunk-mitre-attack.png" | relative_url }})
 
-Mapping findings to technique IDs makes detection engineering follow logically. Each highlighted technique points at a known set of detection rules, telemetry sources, and mitigations. It also enables campaign comparison: a future intrusion with the same technique fingerprint can be flagged as a likely follow-up from the same group.
+The matrix is dense, so here are the highlighted techniques as a flat list. Each technique ID links to the canonical ATT&CK page:
+
+**Initial Access**
+- [T1566.001](https://attack.mitre.org/techniques/T1566/001/) Phishing: Spearphishing Attachment
+
+**Execution**
+- [T1059.001](https://attack.mitre.org/techniques/T1059/001/) Command and Scripting Interpreter: PowerShell
+- [T1053.005](https://attack.mitre.org/techniques/T1053/005/) Scheduled Task/Job: Scheduled Task
+
+**Persistence**
+- [T1053.005](https://attack.mitre.org/techniques/T1053/005/) Scheduled Task/Job
+- [T1112](https://attack.mitre.org/techniques/T1112/) Modify Registry
+- [T1547](https://attack.mitre.org/techniques/T1547/) Boot or Logon Autostart Execution
+
+**Defense Evasion**
+- [T1027](https://attack.mitre.org/techniques/T1027/) Obfuscated Files or Information (Base64-encoded PowerShell)
+- [T1140](https://attack.mitre.org/techniques/T1140/) Deobfuscate/Decode Files or Information
+- [T1112](https://attack.mitre.org/techniques/T1112/) Modify Registry (C2 config stored in HKLM\\Software\\Microsoft\\Network)
+
+**Credential Access**
+- [T1056.001](https://attack.mitre.org/techniques/T1056/001/) Input Capture: Keylogging (FruitFly capability)
+
+**Discovery**
+- [T1082](https://attack.mitre.org/techniques/T1082/) System Information Discovery
+- [T1057](https://attack.mitre.org/techniques/T1057/) Process Discovery
+- [T1083](https://attack.mitre.org/techniques/T1083/) File and Directory Discovery
+
+**Lateral Movement**
+- [T1021.002](https://attack.mitre.org/techniques/T1021/002/) Remote Services: SMB / Windows Admin Shares
+- [T1047](https://attack.mitre.org/techniques/T1047/) Windows Management Instrumentation
+
+**Collection**
+- [T1005](https://attack.mitre.org/techniques/T1005/) Data from Local System
+- [T1560](https://attack.mitre.org/techniques/T1560/) Archive Collected Data (ZIP)
+
+**Command and Control**
+- [T1071.001](https://attack.mitre.org/techniques/T1071/001/) Application Layer Protocol: Web Protocols (HTTP/HTTPS)
+- [T1132.001](https://attack.mitre.org/techniques/T1132/001/) Data Encoding: Standard Encoding (Base64)
+- [T1573.002](https://attack.mitre.org/techniques/T1573/002/) Encrypted Channel: Asymmetric Cryptography (self-signed TLS)
+- [T1568.002](https://attack.mitre.org/techniques/T1568/002/) Dynamic Resolution: Domain Generation Algorithms / DDNS (duckdns, hopto)
+- [T1102](https://attack.mitre.org/techniques/T1102/) Web Service (Pastebin-style storage of C2 metadata)
+
+**Exfiltration**
+- [T1041](https://attack.mitre.org/techniques/T1041/) Exfiltration Over C2 Channel
+- [T1048](https://attack.mitre.org/techniques/T1048/) Exfiltration Over Alternative Protocol (FTP)
+
+Mapping findings to technique IDs makes detection engineering follow logically. Each highlighted technique points at a known set of detection rules, telemetry sources, and mitigations on the ATT&CK page. It also enables campaign comparison: a future intrusion with the same technique fingerprint can be flagged as a likely follow-up from the same group.
 
 ## General Lessons
 
