@@ -18,8 +18,6 @@ The format is not one box with one entry point. BOTSv2 is a dataset that holds t
 - **Ransomware.** A Mac that got encrypted, and a USB stick that delivered the malware to a different Mac earlier.
 - **APT.** A North Korean group (Taedonggang) using spear phishing, self-signed HTTPS, registry-stored C2 URLs, and a scheduled task running Base64-encoded PowerShell.
 
-What follows is the lessons that transfer to the next investigation, not the answers.
-
 ## What Splunk Is
 
 Splunk is a database that holds logs. Every record is indexed by **sourcetype** (the kind of log) and **index** (the bucket). You query it with **SPL** (Search Processing Language), which works like Unix pipes. Each operator takes the output of the previous one.
@@ -58,9 +56,9 @@ Every step in an investigation uses a value from the previous step. Insider thre
 - **`src_ip` is the sender, `dest_ip` is the receiver.** A private IP in `dest_ip` means NAT: the public-facing server is behind a router that translates the address.
 - **Private IPs live in three blocks: `10.x.x.x`, `172.16.x.x` to `172.31.x.x`, and `192.168.x.x`.** Anything else is public.
 - **Port 80 plus Apache plus a 200 OK means a web server.**
-- **SQL injection looks like normal SQL plus one unusual function.** *SELECT, FROM, WHERE* are normal. *UPDATEXML, SLEEP, BENCHMARK, EXTRACTVALUE* are the attack. The skill is spotting the unusual function in the query.
-- **XSS requests usually contain both `<script>` and `cookie`.** That combination has no legitimate use. WAF rule writes itself.
-- **Time correlation finds what keyword search misses.** When a malware file was written, I narrowed the DNS query log to ten minutes around that timestamp. The C2 lookups were obvious. Without the window I had thousands of irrelevant records.
+- **SQL injection looks like normal SQL plus one unusual function.** *SELECT, FROM, WHERE* are normal. *UPDATEXML, SLEEP, BENCHMARK, EXTRACTVALUE* are the attack.
+- **XSS requests usually contain both `<script>` and `cookie`.** That combination has no legitimate use, which makes it a one-line WAF rule.
+- **Time correlation finds what keyword search misses.** When a malware file was written, I narrowed the DNS query log to ten minutes around that timestamp. Without the window I had thousands of irrelevant records.
 - **Dynamic DNS is a tell.** *duckdns.org, no-ip.org, hopto.org, ddns.net*. Operators use them because they can change the resolved IP at any time. Few businesses use them in production. Alert on DNS queries to them.
 
 ## Things That Did Not Click For A While
@@ -73,7 +71,7 @@ Every step in an investigation uses a value from the previous step. Insider thre
 
 ## Mapping Findings To Frameworks
 
-The end of the lab asks the analyst to translate raw findings into two industry-standard frameworks. Most beginner walkthroughs skip this part. It is the part senior analysts spend most of their time on, because frameworks are how investigations get communicated to leadership and threat-intel partners.
+The end of the lab asks the analyst to translate raw findings into two industry-standard frameworks. Frameworks are how investigations get communicated to leadership and threat-intel partners.
 
 ### Diamond Model
 
@@ -139,7 +137,7 @@ The matrix is dense, so here are the highlighted techniques as a flat list. Each
 - [T1041](https://attack.mitre.org/techniques/T1041/) Exfiltration Over C2 Channel
 - [T1048](https://attack.mitre.org/techniques/T1048/) Exfiltration Over Alternative Protocol (FTP)
 
-Mapping findings to technique IDs makes detection engineering follow logically. Each highlighted technique points at a known set of detection rules, telemetry sources, and mitigations on the ATT&CK page. It also enables campaign comparison: a future intrusion with the same technique fingerprint can be flagged as a likely follow-up from the same group.
+Each technique ID points at a known set of detection rules, telemetry sources, and mitigations on the ATT&CK page. A future intrusion with the same technique fingerprint can be flagged as a likely follow-up from the same group.
 
 ## General Lessons
 
