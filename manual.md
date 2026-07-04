@@ -199,12 +199,66 @@ nmap -sC -sV TARGET_IP         # add default scripts for extra detail
 
 `-p- -sV` is the scan to run first on any box. The all-ports part catches services on non-standard ports, and the version part gives you the banners to match against CVEs.
 
+## nmap: scan types
+
+How nmap probes each port. The SYN and UDP scans need root.
+
+```bash
+nmap -sT TARGET_IP         # TCP connect scan, completes the full handshake (no root needed)
+sudo nmap -sS TARGET_IP    # TCP SYN scan, half-open and stealthier, the common default
+sudo nmap -sU TARGET_IP    # UDP scan, finds services like DNS and SNMP (slow)
+```
+
+`-sS` is the go-to for TCP because it is fast and does not finish the handshake. `-sT` is the fallback when you do not have root. `-sU` is worth running because UDP services get missed by TCP-only scans.
+
+## nmap: port range, timing, and speed
+
+```bash
+nmap -p- TARGET_IP           # all 65535 ports
+nmap -p1-1023 TARGET_IP      # ports 1 to 1023
+nmap -F TARGET_IP            # fast scan, top 100 ports only
+nmap -T4 TARGET_IP           # timing 0 (slowest) to 5 (fastest), 4 is a good default
+nmap --min-rate 15 TARGET_IP # send at least 15 packets/sec
+nmap --max-rate 50 TARGET_IP # send no more than 50 packets/sec
+```
+
+Timing matters on real engagements. Faster scans are louder and more likely to trip detection, slower scans blend in but take longer.
+
 ## nmap: host discovery
 
 ```bash
 nmap -sn TARGET_IP/24          # ping sweep a subnet, list live hosts only
 nmap -sL TARGET_IP/24          # list the targets without sending any probe
 ```
+
+## nmap: stealth and evasion
+
+Quieter scans and ways to hide the source. These lean on odd TCP flag combinations to slip past simple firewalls, and on spoofing to hide where the scan comes from. All need root.
+
+```bash
+sudo nmap -sN TARGET_IP        # null scan, no flags set
+sudo nmap -sF TARGET_IP        # FIN scan, only the FIN flag
+sudo nmap -sX TARGET_IP        # Xmas scan, FIN + PSH + URG flags
+sudo nmap -sA TARGET_IP        # ACK scan, maps firewall rules (unfiltered vs filtered)
+```
+
+Null, FIN, and Xmas scans work against a stateless firewall: a closed port replies with RST, an open port stays silent, so no reply means open or filtered. A stateful firewall blocks these, so they are situational.
+
+```bash
+sudo nmap -S SPOOFED_IP TARGET_IP          # spoof your source IP
+sudo nmap --spoof-mac SPOOFED_MAC TARGET_IP # spoof your MAC address
+sudo nmap -D DECOY1,DECOY2,ME TARGET_IP     # decoys, hide your scan among fake sources
+sudo nmap -sI ZOMBIE_IP TARGET_IP           # idle scan, bounce the scan off an idle host
+```
+
+```bash
+sudo nmap -f TARGET_IP           # fragment packets into 8-byte pieces
+sudo nmap -ff TARGET_IP          # fragment into 16-byte pieces
+sudo nmap --source-port 53 TARGET_IP   # scan from a trusted-looking source port
+sudo nmap --reason TARGET_IP     # show why nmap decided each port state (e.g. syn-ack)
+```
+
+`--reason` is the one to remember for learning: it shows the evidence, like `syn-ack` for an open port, instead of just the conclusion.
 
 ## Web content: directory brute force
 
