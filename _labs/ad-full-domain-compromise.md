@@ -4,6 +4,7 @@ date: 2026-02-24
 platform: Self-built
 difficulty: Hard
 category: offensive
+featured: true
 summary: "Built and attacked a home-lab Active Directory environment: NTLM dump, Pass-the-Hash, PSExec to SYSTEM, then krbtgt extraction and Golden Ticket forgery for persistent Domain Admin."
 ---
 
