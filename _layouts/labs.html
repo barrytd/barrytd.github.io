@@ -8,16 +8,24 @@ layout: default
 
 <section class="page-content">
   <div class="container">
-    <div class="lab-filter">
+    <div class="lab-filter" data-filter-group="category">
+      <span class="lab-filter-label">Type</span>
       <button class="lab-filter-btn active" data-filter="all">All</button>
       <button class="lab-filter-btn" data-filter="offensive">Offensive</button>
       <button class="lab-filter-btn" data-filter="blue-team">Blue Team</button>
+    </div>
+    <div class="lab-filter" data-filter-group="difficulty">
+      <span class="lab-filter-label">Difficulty</span>
+      <button class="lab-filter-btn active" data-filter="all">All</button>
+      <button class="lab-filter-btn" data-filter="easy">Easy</button>
+      <button class="lab-filter-btn" data-filter="medium">Medium</button>
+      <button class="lab-filter-btn" data-filter="hard">Hard</button>
     </div>
 
     {% assign all_labs = site.labs | sort: 'date' | reverse %}
     <ul class="lab-grid" id="lab-grid">
       {% for lab in all_labs %}
-      <li class="lab-card" data-category="{{ lab.category }}">
+      <li class="lab-card" data-category="{{ lab.category }}" data-difficulty="{{ lab.difficulty | downcase }}">
         <div class="lab-card-meta">
           <span class="tag tag-platform">{{ lab.platform }}</span>
           {% if lab.difficulty %}<span class="tag tag-difficulty-{{ lab.difficulty | downcase }}">{{ lab.difficulty }}</span>{% endif %}
@@ -35,19 +43,27 @@ layout: default
 
 <script>
   (function () {
-    var buttons = document.querySelectorAll('.lab-filter-btn');
+    var groups = document.querySelectorAll('.lab-filter[data-filter-group]');
     var cards = document.querySelectorAll('#lab-grid .lab-card');
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        buttons.forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        var filter = btn.getAttribute('data-filter');
-        cards.forEach(function (card) {
-          if (filter === 'all' || card.getAttribute('data-category') === filter) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
+    var state = { category: 'all', difficulty: 'all' };
+
+    function apply() {
+      cards.forEach(function (card) {
+        var catOk = state.category === 'all' || card.getAttribute('data-category') === state.category;
+        var diffOk = state.difficulty === 'all' || card.getAttribute('data-difficulty') === state.difficulty;
+        card.style.display = (catOk && diffOk) ? '' : 'none';
+      });
+    }
+
+    groups.forEach(function (group) {
+      var type = group.getAttribute('data-filter-group');
+      var buttons = group.querySelectorAll('.lab-filter-btn');
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          buttons.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          state[type] = btn.getAttribute('data-filter');
+          apply();
         });
       });
     });
