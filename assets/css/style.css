@@ -560,6 +560,10 @@ pre code {
   line-height: 1.55;
   margin: 0 0 1em;
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .lab-card-link {
