@@ -5,6 +5,7 @@ platform: TryHackMe
 difficulty: Medium
 category: blue-team
 featured: true
+featured_order: 2
 summary: "The follow-up to BOTSv2. This dataset adds a big AWS component, so the investigation moves between cloud logs and endpoint logs. Notes on what the cloud side taught me."
 ---
 

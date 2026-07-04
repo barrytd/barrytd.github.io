@@ -45,7 +45,7 @@ layout: default
   </div>
 </section>
 
-{% assign featured_labs = site.labs | where: "featured", true | sort: 'date' | reverse %}
+{% assign featured_labs = site.labs | where: "featured", true | sort: 'featured_order' %}
 {% if featured_labs.size > 0 %}
 <section class="section">
   <div class="container">
