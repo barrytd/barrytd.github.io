@@ -11,8 +11,9 @@ author:
   linkedin: robert-perezpereda
   tryhackme: bxrry
   email: r.perezpereda01@gmail.com
-  # Drop a PDF at /assets/resume.pdf and the Resume button appears automatically.
-  resume: /assets/resume.pdf
+  # TODO: commit the resume PDF at this exact path. The hero Resume button links
+  # here unconditionally, so it will 404 until the file is added to the repo.
+  resume: /assets/robert-perez-resume.pdf
 
 url: "https://barrytd.github.io"
 baseurl: ""

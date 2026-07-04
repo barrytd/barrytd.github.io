@@ -17,8 +17,8 @@ layout: default
   <div class="hero-actions">
     <a class="btn btn-primary" href="{{ '/labs/' | relative_url }}">Browse Labs</a>
     <a class="btn" href="mailto:{{ site.author.email }}">Email</a>
-    {% assign resume_file = site.static_files | where: "path", site.author.resume | first %}
-    {% if resume_file %}<a class="btn" href="{{ site.author.resume | relative_url }}" target="_blank" rel="noopener">Resume</a>{% endif %}
+    {%- comment -%} TODO: drop the PDF at site.author.resume ({{ site.author.resume }}). This button is live now and 404s until the file is committed. {%- endcomment -%}
+    <a class="btn" href="{{ site.author.resume | relative_url }}" target="_blank" rel="noopener">Resume</a>
     <a class="btn" href="https://github.com/{{ site.author.github }}" target="_blank" rel="noopener">GitHub</a>
     <a class="btn" href="https://www.linkedin.com/in/{{ site.author.linkedin }}/" target="_blank" rel="noopener">LinkedIn</a>
     <a class="btn" href="https://tryhackme.com/p/{{ site.author.tryhackme }}" target="_blank" rel="noopener">TryHackMe</a>
