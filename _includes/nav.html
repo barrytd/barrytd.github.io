@@ -10,6 +10,7 @@
     <nav class="nav-links">
       <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">Home</a>
       <a href="{{ '/labs/' | relative_url }}" class="nav-link {% if page.url contains '/labs' %}active{% endif %}">Labs</a>
+      <a href="{{ '/manual/' | relative_url }}" class="nav-link {% if page.url contains '/manual' %}active{% endif %}">Manual</a>
       <a href="{{ '/about/' | relative_url }}" class="nav-link {% if page.url contains '/about' %}active{% endif %}">About</a>
     </nav>
   </div>

@@ -702,6 +702,86 @@ pre code {
 }
 
 /* ------------------------------------------------------------------
+   Manual page (tabbed command reference)
+   ------------------------------------------------------------------ */
+.manual-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  justify-content: center;
+  margin: 2.5em 0 2em;
+  padding-bottom: 1.5em;
+  border-bottom: 1px solid var(--border-soft);
+}
+.manual-tab {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--fg-muted);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  padding: 0.5em 1.1em;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.manual-tab:hover { color: var(--fg); border-color: var(--accent); }
+.manual-tab.active {
+  color: var(--green);
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+
+/* One level shown at a time. Level 1 keeps the active class in markup so
+   the page still shows content if JavaScript is disabled. */
+.manual-panel { display: none; }
+.manual-panel.active { display: block; }
+.manual-panel h1:first-child { margin-top: 0; }
+
+.manual-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  margin-top: 3em;
+  padding-top: 1.5em;
+  border-top: 1px solid var(--border-soft);
+}
+.manual-nav .btn {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.manual-nav .btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.manual-nav .btn:disabled:hover {
+  background: var(--bg-elev);
+  border-color: var(--border);
+  transform: none;
+}
+.manual-progress {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--fg-faint);
+  text-align: center;
+  flex: 1;
+}
+
+@media (max-width: 720px) {
+  /* Keep the four tabs on one swipeable row instead of stacking. */
+  .manual-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+  }
+  .manual-tab { flex: 0 0 auto; }
+}
+
+/* ------------------------------------------------------------------
    Page + lab writeup pages
    ------------------------------------------------------------------ */
 .page-header {
