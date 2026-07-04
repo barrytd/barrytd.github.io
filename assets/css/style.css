@@ -9,6 +9,9 @@
   --bg-elev-2: #1c2128;
   --fg: #e6edf3;
   --fg-muted: #8b949e;
+  /* Lighter gray for running body copy so paragraphs clear WCAG AA (4.5:1).
+     --fg-muted stays for chrome (tags, labels, dates). */
+  --fg-body: #aeb6c1;
   --fg-faint: #6e7681;
   --border: #30363d;
   --border-soft: #21262d;
@@ -279,7 +282,7 @@ pre code {
 
 .hero-tagline {
   font-size: clamp(1.05rem, 2vw, 1.25rem);
-  color: var(--fg-muted);
+  color: var(--fg-body);
   max-width: 640px;
   margin: 0 auto 1.75em;
   line-height: 1.6;
@@ -389,7 +392,7 @@ pre code {
   margin: 0 0 0.4em;
 }
 .section-subtitle {
-  color: var(--fg-muted);
+  color: var(--fg-body);
   margin: 0;
   font-size: 1rem;
 }
@@ -555,7 +558,7 @@ pre code {
 }
 
 .lab-card-summary {
-  color: var(--fg-muted);
+  color: var(--fg-body);
   font-size: 0.92rem;
   line-height: 1.55;
   margin: 0 0 1em;
@@ -679,7 +682,7 @@ pre code {
   margin: 0 0 0.5em;
 }
 .page-header-subtitle {
-  color: var(--fg-muted);
+  color: var(--fg-body);
   margin: 0;
   font-size: 1.05rem;
 }
@@ -706,7 +709,7 @@ pre code {
   letter-spacing: -0.02em;
 }
 .lab-header-summary {
-  color: var(--fg-muted);
+  color: var(--fg-body);
   font-size: 1.05rem;
   line-height: 1.6;
   margin: 0;
