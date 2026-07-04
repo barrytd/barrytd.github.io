@@ -295,6 +295,25 @@ pre code {
   flex-wrap: wrap;
 }
 
+/* Availability / target-role line under the hero buttons */
+.hero-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  margin: 1.75em auto 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--green);
+}
+.hero-availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(126, 231, 135, 0.6);
+  flex-shrink: 0;
+}
+
 /* Stats bar under hero */
 .stats-bar {
   margin-top: 2em;
