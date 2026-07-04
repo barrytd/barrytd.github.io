@@ -581,11 +581,18 @@ pre code {
   font-size: 0.92rem;
   line-height: 1.55;
   margin: 0 0 1em;
-  flex: 1;
+  /* Do NOT use flex:1 here. It stretches this box past the clamp height,
+     which defeats -webkit-line-clamp and lets long summaries render a 5th
+     line that overflow:hidden then slices mid-text under the read link.
+     The link's own margin-top:auto handles bottom alignment instead. */
+  flex: 0 0 auto;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  /* Fallback cap for engines that ignore -webkit-line-clamp: 4 lines at
+     line-height 1.55 keeps the slice from ever reaching the link. */
+  max-height: calc(0.92rem * 1.55 * 4);
 }
 
 .lab-card-link {
