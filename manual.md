@@ -335,6 +335,19 @@ gobuster vhost -u http://TARGET_IP --domain example.thm \
 
 `--exclude-length` filters out the common response size so real hits stand out. Subdomains matter because a bug patched on the main site may still be live on a forgotten one.
 
+## Web servers: headers and misconfigurations
+
+Fingerprint the server from its headers, then check for the misconfigurations that permissive defaults leave switched on.
+
+```bash
+curl -sI http://TARGET:PORT                     # response headers: Server and X-Powered-By name the stack
+curl -sI http://TARGET/ | grep -iE "x-frame|x-content-type|content-security|referrer"  # are the security headers set?
+gobuster dir -u http://TARGET -w WORDLIST -x bak,txt   # find backup files (.bak) and unlinked text files
+nikto -h http://TARGET:PORT                     # automated sweep: version, status pages, indexing, missing headers
+```
+
+Nikto flags where to look in about ten seconds, it does not exploit. Check `/server-status` on Apache and `/nginx_status` on Nginx by hand too, since a stray config line can expose them.
+
 ## SMB: Windows file shares
 
 SMB (ports 139 and 445) often allows anonymous access that leaks users and files.
