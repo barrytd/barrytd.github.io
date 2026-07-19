@@ -981,3 +981,25 @@ pre code {
   }
   .lab-header, .lab-content, .lab-footer-nav { padding-left: 1.25em; padding-right: 1.25em; }
 }
+
+/* ------------------------------------------------------------------
+   About page headshot
+   ------------------------------------------------------------------ */
+.about-photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  float: right;
+  margin: 0.25rem 0 1rem 1.75rem;
+}
+
+@media (max-width: 560px) {
+  .about-photo {
+    float: none;
+    display: block;
+    margin: 0 auto 1.5rem;
+  }
+}

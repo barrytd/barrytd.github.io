@@ -5,6 +5,8 @@ subtitle: Who I am, what I work with, and why this site exists.
 permalink: /about/
 ---
 
+<img class="about-photo" src="{{ '/assets/images/robert-perez.jpg' | relative_url }}" alt="Robert Perez">
+
 I'm **Robert Perez**, an entry-level QA Engineer studying cybersecurity. I'm finishing a B.S. in Cybersecurity and Information Assurance at **WGU** (expected Dec 2026), and I spend my own time working across the blue team and offensive sides of security, with a focus on SIEM-based detection, Active Directory attacks, and Windows internals. I'm aiming for SOC analyst work.
 
 ## Experience
