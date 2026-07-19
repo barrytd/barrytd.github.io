@@ -986,20 +986,44 @@ pre code {
    About page headshot
    ------------------------------------------------------------------ */
 .about-photo {
-  width: 160px;
-  height: 160px;
+  /* ============================================================
+     ADJUST YOUR PHOTO HERE. Edit these 5 numbers, then commit + push.
+     Nothing below this block needs to change.
+       --photo-size       circle diameter (bigger number = bigger photo)
+       --photo-zoom       1 = current. Higher zooms IN (try 1.15, 1.3).
+       --photo-x          left/right framing: 0% = more left, 100% = more right
+       --photo-y          up/down framing:    0% = more top,  100% = more bottom
+       --photo-nudge      how far to push the photo toward the right edge
+     ============================================================ */
+  --photo-size: 170px;
+  --photo-zoom: 1;
+  --photo-x: 50%;
+  --photo-y: 45%;
+  --photo-nudge: 2.5rem;
+  /* ============================================================ */
+
+  display: block;
+  float: right;
+  width: var(--photo-size);
+  height: var(--photo-size);
+  margin: 0.25rem calc(var(--photo-nudge) * -1) 1rem 1.75rem;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
   border: 2px solid var(--border);
   box-shadow: var(--shadow);
-  float: right;
-  margin: 0.25rem -2.5rem 1rem 1.75rem;
+}
+
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--photo-x) var(--photo-y);
+  transform: scale(var(--photo-zoom));
 }
 
 @media (max-width: 560px) {
   .about-photo {
     float: none;
-    display: block;
     margin: 0 auto 1.5rem;
   }
 }
