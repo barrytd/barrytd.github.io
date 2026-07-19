@@ -42,7 +42,7 @@ Inside the Redis shell, the attacker can enumerate keys, read configuration, and
 sudo responder -I <interface> -A
 ```
 
-The `-I` is the network interface to listen on. `-A` is *analyze mode* (passive listening). Triggering an SMB authentication from the target (a file:// URL, an UNC path, a misconfigured share) causes the target to send its NTLMv2 hash to Responder, which logs it to disk.
+The -I is the network interface to listen on. -A is *analyze mode* (passive listening). Triggering an SMB authentication from the target (a file:// URL, an UNC path, a misconfigured share) causes the target to send its NTLMv2 hash to Responder, which logs it to disk.
 
 **Step 4 - Crack the hash offline.** NTLMv2 hashes are hashcat mode 5600.
 
@@ -50,7 +50,7 @@ The `-I` is the network interface to listen on. `-A` is *analyze mode* (passive 
 hashcat -m 5600 -a 0 hash.txt /usr/share/wordlists/rockyou.txt
 ```
 
-`-m 5600` is NTLMv2. `-a 0` is straight dictionary attack. The recovered plaintext is the service account password.
+-m 5600 is NTLMv2. -a 0 is straight dictionary attack. The recovered plaintext is the service account password.
 
 **Step 5 - SMB share abuse.** With valid credentials, enumerate accessible shares.
 
@@ -84,7 +84,7 @@ The output reads **NT AUTHORITY\SYSTEM**, confirming the upgrade. From SYSTEM, b
 
 ## What a Defender Should Do
 
-- Authenticate every Redis instance (`requirepass` in redis.conf) and bind it to *localhost only* unless there's a hard requirement for remote access. Cache eviction issues at AWS, Imgur, and many others all started with unauthenticated Redis.
+- Authenticate every Redis instance (requirepass in redis.conf) and bind it to *localhost only* unless there's a hard requirement for remote access. Cache eviction issues at AWS, Imgur, and many others all started with unauthenticated Redis.
 - Disable LLMNR and NBT-NS via Group Policy on the entire enterprise. They are 1990s name-resolution protocols that exist almost exclusively to be poisoned by attackers.
 - Enforce SMB signing on all server and client endpoints. SMB signing prevents relay attacks against captured authentication.
 - Remove SeImpersonatePrivilege from service accounts that don't strictly need it. The IIS application pool identity is the most common offender.

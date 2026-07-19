@@ -46,11 +46,11 @@ SigninLogs
 | order by FailedAttempts desc
 ```
 
-- `SigninLogs` is the AAD table.
-- `TimeGenerated > ago(24h)` bounds the scan to one day. Without it, the query scans the entire workspace history.
-- `ResultType != "0"` excludes successes (0 means success).
-- `summarize` groups and counts.
-- `where FailedAttempts > 5` cuts the long tail.
+- SigninLogs is the AAD table.
+- TimeGenerated &gt; ago(24h) bounds the scan to one day. Without it, the query scans the entire workspace history.
+- ResultType != "0" excludes successes (0 means success).
+- summarize groups and counts.
+- where FailedAttempts &gt; 5 cuts the long tail.
 
 This catches password spray and brute force against AAD.
 
@@ -67,7 +67,7 @@ SigninLogs
 | project TimeGenerated, UserPrincipalName, IPAddress, Description
 ```
 
-`let` defines a reusable variable. `join kind=inner` returns only matches in both sides.
+let defines a reusable variable. join kind=inner returns only matches in both sides.
 
 **Step 6 - Promote queries to analytics rules.** A query in *Logs* runs once. *Sentinel → Analytics → Create → Scheduled query rule* turns it into a continuous detection with a schedule, threshold, and entity mapping. Matching alerts are grouped into **incidents**, which is what an analyst works.
 
@@ -77,7 +77,7 @@ SigninLogs
 
 - Sentinel is Log Analytics with detection rules and SOC tooling on top. Knowing the workspace layer is the foundation.
 - KQL transfers across Sentinel, Defender for Endpoint, Defender for Cloud, and Azure Resource Graph. Learning it well pays off everywhere in the Microsoft stack.
-- Every query needs `| where TimeGenerated > ago(...)` on line two. Without it, the query scans the workspace history.
+- Every query needs | where TimeGenerated &gt; ago(...) on line two. Without it, the query scans the workspace history.
 - Cloud SIEM is becoming the default. Sentinel, Splunk Cloud, Elastic Cloud, Chronicle. The setup-to-detection loop transfers between them.
 - The Content Hub is the fastest study material. Read Microsoft's pre-built rules before writing your own.
 

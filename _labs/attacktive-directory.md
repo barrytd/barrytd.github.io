@@ -17,7 +17,7 @@ If you only ever do one AD room on TryHackMe, this is the one.
 
 - **nmap** for the port scan.
 - **enum4linux** and **kerbrute** for user enumeration.
-- **Impacket** suite: `GetNPUsers.py`, `GetUserSPNs.py`, `secretsdump.py`, `psexec.py`.
+- **Impacket** suite: GetNPUsers.py, GetUserSPNs.py, secretsdump.py, psexec.py.
 - **hashcat** for offline cracking.
 - **BloodHound** for attack-path mapping.
 - **SharpHound** to collect the data BloodHound visualizes.

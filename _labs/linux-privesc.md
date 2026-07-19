@@ -18,7 +18,7 @@ This is the single best Linux privesc reference room TryHackMe offers, and the t
 - **find** for SUID/SGID enumeration.
 - **sudo -l** for sudo policy enumeration.
 - **GTFOBins** as the reference for binary shell escapes.
-- **LinPEAS** (or `linux-exploit-suggester`) for kernel-version exploit discovery.
+- **LinPEAS** (or linux-exploit-suggester) for kernel-version exploit discovery.
 - **gcc** for compiling the Dirty COW exploit.
 
 ## Methodology
@@ -27,7 +27,7 @@ The room presents 18 separate privesc paths. I'll group them by category since t
 
 ### Sudo abuse (4 techniques)
 
-**Step 1 - sudo -l first.** Every Linux foothold starts with `sudo -l`. The output reveals which commands the current user can run as root, and with what flags.
+**Step 1 - sudo -l first.** Every Linux foothold starts with sudo -l. The output reveals which commands the current user can run as root, and with what flags.
 
 ```bash
 sudo -l
@@ -36,9 +36,9 @@ sudo -l
 The four sudo-abuse patterns in this room:
 
 - **sudo with the binary's documented shell escape.** *less, find, awk, vim, etc.* all have shell escapes. Cross-reference against **GTFOBins**.
-- **sudo LD_PRELOAD.** If sudoers preserves the LD_PRELOAD environment variable (`Defaults env_keep += "LD_PRELOAD"`), the attacker can write a malicious .so file with a static constructor and use sudo to run any allowed command, which loads the malicious library as root.
-- **sudo CVE-2019-14287.** A logic bug in sudo where `sudo -u#-1` runs as UID 0 even when the sudoers policy says *anyone except root*.
-- **sudo with a relative path or PATH manipulation.** Wrapper scripts that invoke binaries by name (`cp` instead of `/bin/cp`) inherit the user's PATH and can be hijacked.
+- **sudo LD_PRELOAD.** If sudoers preserves the LD_PRELOAD environment variable (Defaults env_keep += "LD_PRELOAD"), the attacker can write a malicious .so file with a static constructor and use sudo to run any allowed command, which loads the malicious library as root.
+- **sudo CVE-2019-14287.** A logic bug in sudo where sudo -u#-1 runs as UID 0 even when the sudoers policy says *anyone except root*.
+- **sudo with a relative path or PATH manipulation.** Wrapper scripts that invoke binaries by name (cp instead of /bin/cp) inherit the user's PATH and can be hijacked.
 
 ### SUID abuse (3 techniques)
 
@@ -66,7 +66,7 @@ ls -la /etc/cron.d/ /etc/cron.daily/ /etc/cron.hourly/
 Patterns:
 
 - **Writable script in a root cron.** The script the cron runs is owned by a lower-privileged user. Edit it, wait one minute.
-- **Wildcard injection in a cron'd command.** `tar`, `chown`, `chmod` with wildcards in a directory the attacker can write into.
+- **Wildcard injection in a cron'd command.** tar, chown, chmod with wildcards in a directory the attacker can write into.
 - **PATH manipulation in a root cron.** If the cron's command uses an unqualified binary name and PATH includes a writable directory, plant a binary there.
 
 ### Capabilities (1 technique)
@@ -102,7 +102,7 @@ echo 'attacker::0:0:::/bin/bash' >> /etc/passwd
 cat /etc/exports
 ```
 
-`no_root_squash` is the option that tells the NFS server *"trust the client's root user as if they were our root user."* If a share is exported with no_root_squash and the attacker controls a client, they can create a SUID-root binary on the share and execute it from the target.
+no_root_squash is the option that tells the NFS server *"trust the client's root user as if they were our root user."* If a share is exported with no_root_squash and the attacker controls a client, they can create a SUID-root binary on the share and execute it from the target.
 
 ### Kernel exploits (2 techniques)
 
@@ -139,7 +139,7 @@ find / -writable -type f 2>/dev/null | grep -v /proc
 
 ## Key Takeaways
 
-- **`sudo -l` and `find / -perm -4000` are the two first commands on every Linux foothold.** Together they cover the majority of privesc paths.
+- **sudo -l and find / -perm -4000 are the two first commands on every Linux foothold.** Together they cover the majority of privesc paths.
 - **GTFOBins is the single most valuable bookmark.** Memorize the names: less, find, awk, vim, nano, perl, python, ruby, ftp, more, env, expect.
 - **Cron is a privesc treasure trove** when any of its scripts, wildcards, or PATH dependencies touch a non-root-writable area.
 - **NFS no_root_squash is a one-shot privesc** when the attacker controls the NFS client.
@@ -152,5 +152,5 @@ find / -writable -type f 2>/dev/null | grep -v /proc
 - Run MySQL, PostgreSQL, Redis, and other database services as dedicated low-privilege accounts. Never as root.
 - Restrict NFS exports with *root_squash* (the default) and IP-based access controls.
 - Patch the kernel. Dirty COW is from 2016. There is no excuse to be vulnerable to it in 2024+.
-- Set `/etc/passwd`, `/etc/shadow`, `/etc/group`, `/etc/sudoers`, and the cron directories to 0644 / 0600 / 0440 as appropriate. Run file integrity monitoring (AIDE, Tripwire, Wazuh FIM) on those paths.
+- Set /etc/passwd, /etc/shadow, /etc/group, /etc/sudoers, and the cron directories to 0644 / 0600 / 0440 as appropriate. Run file integrity monitoring (AIDE, Tripwire, Wazuh FIM) on those paths.
 - Enable auditd rules for SUID file creation and writes to critical config files. Sysmon Linux is now production-grade and a strong choice.

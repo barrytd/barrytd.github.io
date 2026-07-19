@@ -51,7 +51,7 @@ echo -n "<base64-string>" | base64 -d
 
 **Step 6 - Forge an invite for a fresh email.** The app.log also mentioned *"New user created: hello@fake.thm"*. Re-running the algorithm with that email and the recovered constant produces a working invite code. Submitting it on the *Login with Invite Code* tab grants authenticated access.
 
-**Step 7 - Spot the padding oracle.** The dashboard URL accepts a *date* parameter. Sending an arbitrary plaintext value like `?date=2024-01-01` triggers two highly informative server errors:
+**Step 7 - Spot the padding oracle.** The dashboard URL accepts a *date* parameter. Sending an arbitrary plaintext value like ?date=2024-01-01 triggers two highly informative server errors:
 
 ```
 Warning: openssl_decrypt(): IV passed is only 6 bytes long
@@ -88,7 +88,7 @@ padbuster outputs a freshly-minted base64 ciphertext that the server's key will 
 
 ## What a Defender Should Do
 
-- Generate invite codes from `random_bytes()` or `openssl_random_pseudo_bytes()` (PHP's cryptographically secure random functions) and store them server-side. Never derive tokens from user-controllable inputs through deterministic functions.
+- Generate invite codes from random_bytes() or openssl_random_pseudo_bytes() (PHP's cryptographically secure random functions) and store them server-side. Never derive tokens from user-controllable inputs through deterministic functions.
 - Move logs outside the web root. Strip secrets and tokens from log messages before they are written.
 - Use **authenticated encryption** like AES-GCM or AES-CCM (modes that verify a built-in cryptographic signature before decrypting, so tampered ciphertext fails the check and never reveals padding info).
 - If CBC must be used, prepend an HMAC and verify it in **constant time** (a comparison that always takes the same amount of time, so an attacker cannot learn from response timing how many bytes matched) before calling *openssl_decrypt*.

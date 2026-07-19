@@ -25,8 +25,8 @@ This is the part of the engagement that beginners often skip. You can't scan a h
 
 - **ARP scan (Layer 2):** only works on the local Ethernet segment. The host has to be on the same broadcast domain. Cannot cross a router. Extremely reliable and very fast.
 - **ICMP echo (Layer 3 / ping):** can cross routers but is commonly blocked at firewalls. Many organizations disable ICMP echo as a *"hide from casual scans"* measure.
-- **TCP ping (`-PS`, `-PA`):** sends a TCP SYN or ACK to a specific port and watches the response. Firewalls that drop ICMP often allow TCP traffic to standard ports like 80 and 443.
-- **UDP ping (`-PU`):** less common, useful when other probes are filtered. UDP scanning is also dramatically slower because of how the protocol responds to closed ports.
+- **TCP ping (-PS, -PA):** sends a TCP SYN or ACK to a specific port and watches the response. Firewalls that drop ICMP often allow TCP traffic to standard ports like 80 and 443.
+- **UDP ping (-PU):** less common, useful when other probes are filtered. UDP scanning is also dramatically slower because of how the protocol responds to closed ports.
 
 **Step 2 - Pick the right probe for the segment.**
 
@@ -41,23 +41,23 @@ sudo nmap -sn -PE -PS80,443 -PA80,443 10.0.0.0/24
 sudo nmap -sn -PU53,161 <range>
 ```
 
-`-sn` is *"no port scan"*: only do host discovery, do not scan any ports on the alive hosts. `-PR` is ARP. `-PE` is ICMP echo. `-PS80,443` sends TCP SYN to those ports. `-PA80,443` sends TCP ACK to those ports.
+-sn is *"no port scan"*: only do host discovery, do not scan any ports on the alive hosts. -PR is ARP. -PE is ICMP echo. -PS80,443 sends TCP SYN to those ports. -PA80,443 sends TCP ACK to those ports.
 
-**Step 3 - Understand the `--reason` flag.** When a host appears alive in the results, nmap can be asked *why* it thinks so. This is the difference between *"the host is up"* and *"the host responded to my ARP request"* (which tells you it's on the local segment) versus *"the host responded with TCP RST on port 80"* (which tells you the host is routable and a firewall is not filtering that probe).
+**Step 3 - Understand the --reason flag.** When a host appears alive in the results, nmap can be asked *why* it thinks so. This is the difference between *"the host is up"* and *"the host responded to my ARP request"* (which tells you it's on the local segment) versus *"the host responded with TCP RST on port 80"* (which tells you the host is routable and a firewall is not filtering that probe).
 
 ```bash
 sudo nmap -sn -PE -PS80 --reason <range>
 ```
 
-**Step 4 - Privileged vs unprivileged behavior.** Several discovery techniques *require root* because they construct raw packets. Without root, nmap silently falls back to less effective methods. The simplest example: without root, `-PS80` cannot send a SYN; it has to do a full TCP connect, which is slower and produces different log entries on the target.
+**Step 4 - Privileged vs unprivileged behavior.** Several discovery techniques *require root* because they construct raw packets. Without root, nmap silently falls back to less effective methods. The simplest example: without root, -PS80 cannot send a SYN; it has to do a full TCP connect, which is slower and produces different log entries on the target.
 
 **Step 5 - Target specification expansion.** nmap accepts ranges in several forms:
 
-- CIDR: `10.0.0.0/24`
-- Hyphenated range: `10.0.0.1-50`
-- Multiple targets: `10.0.0.1 10.0.0.2 10.0.0.3`
-- File of targets: `nmap -iL targets.txt`
-- Exclusions: `nmap 10.0.0.0/24 --exclude 10.0.0.1`
+- CIDR: 10.0.0.0/24
+- Hyphenated range: 10.0.0.1-50
+- Multiple targets: 10.0.0.1 10.0.0.2 10.0.0.3
+- File of targets: nmap -iL targets.txt
+- Exclusions: nmap 10.0.0.0/24 --exclude 10.0.0.1
 
 All of these expand to the same thing internally. Pick whichever is easiest to read in the scan log.
 
@@ -66,7 +66,7 @@ All of these expand to the same thing internally. Pick whichever is easiest to r
 - **You can't scan a host until you know it's there.** Host discovery is a real step, not a default.
 - **The right probe depends on the network layer.** ARP for local segments, ICMP echo where it works, TCP SYN/ACK as a fallback, UDP as a last resort.
 - **Privilege changes nmap's behavior.** Run as root for raw-packet probes, unprivileged as a last resort.
-- **`--reason` is the diagnostic flag every analyst should default to.** Knowing *why* nmap thinks a host is up is half of triaging the results.
+- **--reason is the diagnostic flag every analyst should default to.** Knowing *why* nmap thinks a host is up is half of triaging the results.
 
 ## What a Defender Should Do
 

@@ -40,7 +40,7 @@ This room teaches **PCAP forensics**, **offline hash cracking**, and the **SUID 
 hashcat -m <MODE> -a 0 hash.txt /usr/share/wordlists/rockyou.txt
 ```
 
-`-m` is the hash mode (algorithm). `-a 0` is straight dictionary attack. The hit returns in seconds because the password lives near the top of rockyou.
+-m is the hash mode (algorithm). -a 0 is straight dictionary attack. The hit returns in seconds because the password lives near the top of rockyou.
 
 **Step 5 - Walk in through the back door.** SSH to the box with the cracked credentials lands a shell.
 
@@ -68,6 +68,6 @@ This is **SUID bash**. By default, bash drops privileges when started from a SUI
 
 - Disable plaintext protocols at the network and host level: no Telnet, no FTP, no plain HTTP-authenticated services. Force TLS or SSH.
 - Monitor for new SUID binaries with file integrity tooling. A new file with the SUID bit appearing in a user home directory is a high-confidence backdoor indicator.
-- Strip writable permissions from `/etc/ssh/sshd_config.d/` and `/etc/ssh/sshd_config` for non-root accounts. Backdoors often add a *Match User* block.
+- Strip writable permissions from /etc/ssh/sshd_config.d/ and /etc/ssh/sshd_config for non-root accounts. Backdoors often add a *Match User* block.
 - Rotate every credential that has ever been typed over an unencrypted session, especially after a confirmed compromise.
 - Keep PCAP capture running on critical segments. The forensics value of PCAP is enormous and storage is cheap.

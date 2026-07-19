@@ -95,7 +95,7 @@ for i in range(1, 1000):
 
 - **Parameterize every database query.** Same advice as Kioptrix and DVWA Blind: prepared statements are the structural fix.
 - Decommission old API versions on a clear timeline. Add a 410 Gone response for /v1 endpoints six months after /v2 ships, and remove them entirely a year later.
-- Generate session IDs from a CSPRNG (cryptographically secure pseudo-random number generator): `random.SystemRandom()` in Python, `crypto.randomBytes()` in Node, `random_bytes()` in PHP 7+. Never timestamps, never counters, never hash(username).
+- Generate session IDs from a CSPRNG (cryptographically secure pseudo-random number generator): random.SystemRandom() in Python, crypto.randomBytes() in Node, random_bytes() in PHP 7+. Never timestamps, never counters, never hash(username).
 - Set session IDs to at least 128 bits of entropy. PHP's default is sufficient; many legacy apps use shorter formats.
 - Audit endpoint-level access control on every route on every API version. The router config is the audit target.
 - Log and alert on session-ID brute-force patterns: same source IP, many cookie values per second, all 302 redirecting to login.

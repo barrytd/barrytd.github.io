@@ -45,7 +45,7 @@ This is more dangerous than reflected XSS because it does not require the attack
 
 ### CSRF
 
-The password-change form accepts a new password via POST and *does not verify a CSRF token*. Any third-party page that triggers a POST to the password-change URL (via an auto-submitting form or an `<img>` with the URL as source for GET-based CSRF) can change the victim's password.
+The password-change form accepts a new password via POST and *does not verify a CSRF token*. Any third-party page that triggers a POST to the password-change URL (via an auto-submitting form or an &lt;img&gt; with the URL as source for GET-based CSRF) can change the victim's password.
 
 ```html
 <form method="POST" action="http://dvwa/vulnerabilities/csrf/" id="x">
@@ -72,7 +72,7 @@ Same pattern as Kioptrix Level 2.
 
 ### IDOR (Insecure Direct Object Reference)
 
-The profile page shows `/profile?user_id=123`. Changing the value to 124 shows another user's profile. **The application authenticates the user but does not authorize each resource access**: it never asks *"is this user allowed to read user_id 124?"* before returning the data.
+The profile page shows /profile?user_id=123. Changing the value to 124 shows another user's profile. **The application authenticates the user but does not authorize each resource access**: it never asks *"is this user allowed to read user_id 124?"* before returning the data.
 
 This is **CWE-639** and is the most common API authorization bug in real engagements.
 
@@ -84,7 +84,7 @@ The page includes a file based on a *page* parameter:
 ?page=about.php
 ```
 
-The shape is `include($_GET['page'])`. With *allow_url_include* off, the parameter can still be local files via path traversal:
+The shape is include($_GET['page']). With *allow_url_include* off, the parameter can still be local files via path traversal:
 
 ```
 ?page=../../../../etc/passwd
@@ -112,4 +112,4 @@ The wrapper base64-encodes the file contents before returning them, which preven
 - **Issue and validate anti-CSRF tokens on every state-changing request.** Modern frameworks do this for free; legacy code rarely does.
 - **Authorize every resource access.** Never trust a client-supplied object ID without checking that the current user owns or can access that object.
 - **Strip path traversal characters from any file-reading parameter.** Better: use an allow-list of valid file IDs and map them server-side to filesystem paths.
-- **Set `allow_url_include = Off` in php.ini.** It's the single line that prevents remote-file-inclusion-to-RCE.
+- **Set allow_url_include = Off in php.ini.** It's the single line that prevents remote-file-inclusion-to-RCE.

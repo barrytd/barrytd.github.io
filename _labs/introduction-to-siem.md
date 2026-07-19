@@ -29,7 +29,7 @@ The alert in this room fires for **cudominer.exe** on host **HR_02** for user **
 
 **Step 2 - Confirm the data behind the alert.** Click through to the underlying events. The 4688 record shows:
 
-- New Process Name: `cudominer.exe`
+- New Process Name: cudominer.exe
 - Process Command Line: typical cryptominer arguments (pool URL, wallet address, worker name).
 - Parent Process: an unexpected parent (a user-space tool, not a service).
 

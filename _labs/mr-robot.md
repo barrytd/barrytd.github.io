@@ -100,12 +100,12 @@ A root shell, in two commands.
 - **Username enumeration is a 100x multiplier on a brute force.** A login page that distinguishes "wrong user" from "wrong password" hands the attacker the entire username axis for free.
 - **Admin in WordPress equals shell on the host.** Treat WP admin credentials as web-server-user shell access in blast radius.
 - **Unsalted MD5 belongs to the previous decade.** A lookup service like CrackStation resolves every common plaintext instantly.
-- **SUID on a complex binary is almost always a privesc bug waiting to happen.** Run `find / -perm -4000` on every new Linux foothold.
+- **SUID on a complex binary is almost always a privesc bug waiting to happen.** Run find / -perm -4000 on every new Linux foothold.
 
 ## What a Defender Should Do
 
 - Never list sensitive paths in robots.txt. Use authentication.
 - Return a single generic error string for every failed login: *"Invalid login credentials."* No hint about which field was wrong.
-- Set `DISALLOW_FILE_EDIT` and `DISALLOW_FILE_MODS` in *wp-config.php* on every production WordPress install. That single setting is the most effective hardening control.
+- Set DISALLOW_FILE_EDIT and DISALLOW_FILE_MODS in *wp-config.php* on every production WordPress install. That single setting is the most effective hardening control.
 - Store passwords with **Argon2id** or **bcrypt** with a per-user random salt and a deliberately slow work factor. Never raw MD5.
-- Remove the SUID bit from anything that does not absolutely require it: `chmod u-s /usr/local/bin/nmap`. For the rare cases where real raw-socket access is needed, use Linux capabilities instead.
+- Remove the SUID bit from anything that does not absolutely require it: chmod u-s /usr/local/bin/nmap. For the rare cases where real raw-socket access is needed, use Linux capabilities instead.

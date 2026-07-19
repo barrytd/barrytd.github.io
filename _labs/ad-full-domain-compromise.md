@@ -29,7 +29,7 @@ The chain demonstrates the full AD compromise lifecycle: **initial foothold → 
 **Step 1 - Build the lab.** A minimal AD lab needs:
 
 - One Windows Server (2019 or 2022) promoted to domain controller via *dcpromo / Install-ADDSForest*.
-- A domain name (I used `lab.local`).
+- A domain name (I used lab.local).
 - One or more Windows 10 / 11 clients joined to the domain.
 - A few user accounts of varying privilege: regular user, domain admin, service account with an SPN.
 
@@ -52,7 +52,7 @@ The output includes NTLM hashes for every account that has interactively logged 
 impacket-psexec -hashes :<NTLM_HASH> <DOMAIN>/<user>@<TARGET>
 ```
 
-The lack of a plaintext on the left of the colon and the `:<HASH>` format is the *"pass the hash"* idiom. SMB authentication does not require knowing the password, only the hash.
+The lack of a plaintext on the left of the colon and the :&lt;HASH&gt; format is the *"pass the hash"* idiom. SMB authentication does not require knowing the password, only the hash.
 
 **Step 5 - Lateral movement.** Once one host is compromised, mimikatz again extracts whatever credentials are cached on that host. Repeat until a Domain Admin or a service account with replication privileges appears.
 
@@ -62,7 +62,7 @@ impacket-psexec -hashes :<HASH> <DOMAIN>/<da_user>@<DC_IP>
 
 A SYSTEM shell on the domain controller follows.
 
-**Step 6 - NTDS.dit dump with secretsdump.** The Domain Controller stores every account's hash in `C:\Windows\NTDS\NTDS.dit`. With admin access to the DC, **secretsdump** can extract them.
+**Step 6 - NTDS.dit dump with secretsdump.** The Domain Controller stores every account's hash in C:\Windows\NTDS\NTDS.dit. With admin access to the DC, **secretsdump** can extract them.
 
 ```bash
 impacket-secretsdump <DOMAIN>/<da>:<password>@<DC_IP>
@@ -78,7 +78,7 @@ For a more stealthy approach, **DCSync** uses MS-DRSR (the legitimate replicatio
 mimikatz # kerberos::golden /domain:lab.local /sid:S-1-5-21-... /rc4:<krbtgt_hash> /user:Administrator /ptt
 ```
 
-`/user:Administrator` forges a ticket *as* Administrator, even if the account doesn't exist. `/ptt` injects the ticket into the current Kerberos cache.
+/user:Administrator forges a ticket *as* Administrator, even if the account doesn't exist. /ptt injects the ticket into the current Kerberos cache.
 
 **Step 9 - Persistent Domain Admin.** From the moment the Golden Ticket is injected, every operation that uses Kerberos authentication (PSExec, WMI, remote PowerShell, SMB) treats the attacker as Administrator. The ticket is valid by default for 10 years, and rotating the krbtgt password twice is the only thing that invalidates it.
 
@@ -97,4 +97,4 @@ mimikatz # kerberos::golden /domain:lab.local /sid:S-1-5-21-... /rc4:<krbtgt_has
 - Restrict membership in privileged groups (Domain Admins, Enterprise Admins, Backup Operators, Print Operators). The fewer accounts, the smaller the blast radius.
 - Rotate the krbtgt password regularly (Microsoft's recommendation is yearly, more often after any compromise). Invalidate Golden Tickets with the standard procedure: rotate, wait 10 hours, rotate again.
 - Run **PingCastle** or **PurpleKnight** (free AD audit tools) quarterly. They find the ACL misconfigurations BloodHound also surfaces.
-- Monitor for `secretsdump` indicators: VSS shadow copy creation, suspicious LDAP replication requests, unusual service installations on the DC. Sysmon EventIDs 7, 8, and 11 plus security 4624/4672/4768/4769 are the core dataset.
+- Monitor for secretsdump indicators: VSS shadow copy creation, suspicious LDAP replication requests, unusual service installations on the DC. Sysmon EventIDs 7, 8, and 11 plus security 4624/4672/4768/4769 are the core dataset.

@@ -34,7 +34,7 @@ The chain in this room is: anonymous Samba access leaks a password wordlist, Hyd
 nmap -p- -sV <TARGET_IP>
 ```
 
-The `-p-` flag scans all 65535 TCP ports (default is only 1000). `-sV` does service version detection. Both matter because real services often hide on non-standard ports.
+The -p- flag scans all 65535 TCP ports (default is only 1000). -sV does service version detection. Both matter because real services often hide on non-standard ports.
 
 **Step 2 - Discover the web app layout.** A gobuster directory brute force surfaces */squirrelmail/* (a PHP webmail front-end) and the usual *css/js/images* paths.
 
@@ -67,7 +67,7 @@ hydra -l <username> -P log1.txt <TARGET_IP> http-post-form \
   "/squirrelmail/src/redirect.php:login_username=^USER^&secretkey=^PASS^&js_autodetect_results=1&just_logged_in=1:Unknown user or password incorrect"
 ```
 
-`-l` is the single username. `-P` is the password wordlist. The failure marker after the final colon is the literal text Hydra sees on a wrong-password response.
+-l is the single username. -P is the password wordlist. The failure marker after the final colon is the literal text Hydra sees on a wrong-password response.
 
 **Step 6 - Pivot through the mailbox.** The recovered SquirrelMail account contains an automated *"Samba Password reset"* email with a new password for the user's personal SMB share. This is the textbook *"compromise the inbox, compromise every account whose reset flow lands there"* pattern.
 
@@ -79,7 +79,7 @@ hydra -l <username> -P log1.txt <TARGET_IP> http-post-form \
 searchsploit cuppa cms
 ```
 
-The bug is **CVE-2018-16763**, an unauthenticated Remote File Inclusion in */alertConfigField.php*. The *urlConfig* query parameter is concatenated directly into a PHP `include()` call with no allow-list, no path sanitization, no authentication. Pointing it at an attacker-controlled URL causes PHP to fetch and execute that URL as code.
+The bug is **CVE-2018-16763**, an unauthenticated Remote File Inclusion in */alertConfigField.php*. The *urlConfig* query parameter is concatenated directly into a PHP include() call with no allow-list, no path sanitization, no authentication. Pointing it at an attacker-controlled URL causes PHP to fetch and execute that URL as code.
 
 ```bash
 # host the payload locally
@@ -98,7 +98,7 @@ A reverse shell lands as **www-data**.
 cd /var/www/html && tar -czf /var/backups/backup.tgz *
 ```
 
-The `*` is a shell *wildcard*, which the shell expands into the literal list of filenames in that directory before tar ever sees it. **tar parses arguments starting with `--` as command-line flags, not filenames.**
+The * is a shell *wildcard*, which the shell expands into the literal list of filenames in that directory before tar ever sees it. **tar parses arguments starting with -- as command-line flags, not filenames.**
 
 **Step 10 - Tar wildcard injection.** Creating two empty files in the wildcard directory whose *names* are valid tar flags, plus a real shell script, tricks the next cron tick into running attacker code as root.
 
@@ -121,9 +121,9 @@ When cron fires, the shell expands the wildcard, tar treats *--checkpoint-action
 
 ## What a Defender Should Do
 
-- Disable anonymous SMB (`map to guest = never`) and never store credential material on any share.
+- Disable anonymous SMB (map to guest = never) and never store credential material on any share.
 - Never archive plaintext password rotation history. If audit history is required for compliance, store one-way hashes.
 - Stop sending credentials by email. Send a one-time, time-boxed reset link that requires the user to set a new password on a TLS-protected endpoint.
 - Put pre-production CMS paths behind real authentication, basic auth at minimum.
-- Remove or replace unmaintained CMS software. Cuppa CMS is effectively abandoned. Set `allow_url_include = Off` in php.ini.
-- Fix tar wildcard exposure with `tar czf backup.tgz -- *` (the `--` end-of-options marker) or replace the glob with `find ... -print0 | xargs -0 tar`.
+- Remove or replace unmaintained CMS software. Cuppa CMS is effectively abandoned. Set allow_url_include = Off in php.ini.
+- Fix tar wildcard exposure with tar czf backup.tgz -- * (the -- end-of-options marker) or replace the glob with find ... -print0 | xargs -0 tar.

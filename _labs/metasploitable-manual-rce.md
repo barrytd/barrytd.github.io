@@ -28,9 +28,9 @@ The room is the *"learn by doing the manual chain after you've done the easy cha
 nmap -p- -sV --script vuln <TARGET_IP>
 ```
 
-The `--script vuln` flag runs nmap's vulnerability detection scripts, which often surface the specific CVE for a fingerprinted version.
+The --script vuln flag runs nmap's vulnerability detection scripts, which often surface the specific CVE for a fingerprinted version.
 
-**Step 2 - Understand the UnrealIRCd backdoor.** UnrealIRCd 3.2.8.1 was distributed (briefly, in 2009-2010) with a **deliberate backdoor** introduced via a compromised release server. Any client that sends the magic string `AB;` followed by a shell command will have the command executed by the IRC daemon, which runs as root by default.
+**Step 2 - Understand the UnrealIRCd backdoor.** UnrealIRCd 3.2.8.1 was distributed (briefly, in 2009-2010) with a **deliberate backdoor** introduced via a compromised release server. Any client that sends the magic string AB; followed by a shell command will have the command executed by the IRC daemon, which runs as root by default.
 
 This is a **CVE-2010-2075** finding. It's one of the cleanest examples of a *supply chain attack* in the wild.
 
@@ -52,10 +52,10 @@ The IRC daemon parses the input, hits the backdoored code path, executes the bas
 
 **Step 5 - Credential harvesting.** Even with root already achieved, walking the filesystem for credentials is a good habit. Common interesting locations on a Linux box:
 
-- `/etc/shadow` for password hashes.
-- `/var/www/` for web app config files with database credentials (Metasploitable has several).
-- `/home/*/` for user-specific config and SSH keys.
-- `/etc/exports` and `/etc/samba/smb.conf` for share configurations.
+- /etc/shadow for password hashes.
+- /var/www/ for web app config files with database credentials (Metasploitable has several).
+- /home/*/ for user-specific config and SSH keys.
+- /etc/exports and /etc/samba/smb.conf for share configurations.
 
 ## Key Takeaways
 
@@ -67,7 +67,7 @@ The IRC daemon parses the input, hits the backdoored code path, executes the bas
 ## What a Defender Should Do
 
 - Verify package integrity for downloaded software with PGP signatures or checksums published over a separate channel. The UnrealIRCd compromise was detected by checksum mismatch.
-- Run services as low-privileged service accounts, never as root. systemd makes this almost effortless with the `User=` directive in unit files.
+- Run services as low-privileged service accounts, never as root. systemd makes this almost effortless with the User= directive in unit files.
 - Keep an inventory of which services are running and on which ports. Anything you don't recognize is a finding.
 - Patch and re-fingerprint after every release. UnrealIRCd's vendor fixed the backdoor immediately; sites that ran the bad version for years were patched-vulnerable.
 - Monitor for unexpected shell spawns from non-shell services. *bash* spawned by *unrealircd* should never happen in normal operation.

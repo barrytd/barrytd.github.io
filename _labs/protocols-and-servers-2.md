@@ -21,7 +21,7 @@ Different organizations weight these differently. An intelligence agency cares m
 
 ## Sniffing: Reading Traffic Off the Wire
 
-A sniffing attack is network packet capture. When a protocol communicates in cleartext, anyone positioned to see the traffic can read the contents, including credentials. `tcpdump` and Wireshark are the standard tools. A filter as simple as a port number or a protocol name isolates the interesting traffic, and an ASCII view turns a POP3 or FTP login into a readable `USER` and `PASS` right in the output.
+A sniffing attack is network packet capture. When a protocol communicates in cleartext, anyone positioned to see the traffic can read the contents, including credentials. tcpdump and Wireshark are the standard tools. A filter as simple as a port number or a protocol name isolates the interesting traffic, and an ASCII view turns a POP3 or FTP login into a readable USER and PASS right in the output.
 
 The common assumption is that TLS killed sniffing. It did not, it just narrowed where it works. Sniffing is still effective on internal corporate networks that never encrypted internal traffic, on legacy systems and IoT devices that only speak cleartext, on misconfigured services where TLS is available but not enforced, on wireless networks within range of the attacker, and after a MITM that stripped the encryption. On internal penetration tests, sniffing remains one of the most reliable ways to collect credentials.
 
@@ -33,13 +33,13 @@ A man-in-the-middle attack puts the attacker in the middle of a conversation tha
 
 Getting into that position means redirecting traffic. **ARP spoofing** works on a local network by forging ARP replies so the victim's traffic for the gateway comes to the attacker instead. **DNS spoofing** hands out false DNS answers to send victims to attacker-controlled servers. **Rogue access points** are fake Wi-Fi networks named to look legitimate, so anyone who connects routes all their traffic through the attacker. **BGP hijacking** does the same thing at internet routing scale, which is a nation-state-tier attack rather than a LAN one.
 
-Encryption complicates MITM but does not automatically stop it. **SSL stripping** downgrades a victim's HTTPS connection to HTTP, keeping a real HTTPS link to the server while serving the victim cleartext, and a user who never typed `https://` may not notice the missing padlock. **Fake certificates** work if the victim clicks through the warning. A **compromised or rogue certificate authority** is the serious case, because it lets an attacker mint valid-looking certificates for any domain.
+Encryption complicates MITM but does not automatically stop it. **SSL stripping** downgrades a victim's HTTPS connection to HTTP, keeping a real HTTPS link to the server while serving the victim cleartext, and a user who never typed https:// may not notice the missing padlock. **Fake certificates** work if the victim clicks through the warning. A **compromised or rogue certificate authority** is the serious case, because it lets an attacker mint valid-looking certificates for any domain.
 
 The defenses are worth naming because they explain why MITM is hard now. **HSTS** tells a browser to only ever use HTTPS for a domain, which defeats SSL stripping. **Certificate Transparency** logs every issued certificate publicly, so fraudulent ones get noticed. **Certificate pinning** hard-codes which certificate an app will accept, so even a compromised CA does not help. **DANE** publishes certificate info in DNS using DNSSEC as an alternative trust path. None of these matter if the underlying protocol is cleartext, which is the whole reason cleartext protocols are the root problem.
 
 ## Password Attacks
 
-Even encrypted services fall to weak passwords. **Hydra** is the tool for testing this: point it at a service with a username and a wordlist and it tries combinations until one works. The mechanics are simple, a single login with `-l`, a wordlist with `-P`, and the service name, but the concept generalizes.
+Even encrypted services fall to weak passwords. **Hydra** is the tool for testing this: point it at a service with a username and a wordlist and it tries combinations until one works. The mechanics are simple, a single login with -l, a wordlist with -P, and the service name, but the concept generalizes.
 
 Modern password attacks go beyond plain brute force. **Credential stuffing** replays username and password pairs leaked from other breaches, betting on password reuse. **Password spraying** flips the loop, trying a few common passwords across many accounts to avoid lockouts. Both lean on the reality that people reuse passwords and pick weak ones.
 

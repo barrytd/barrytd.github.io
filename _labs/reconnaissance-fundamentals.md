@@ -35,7 +35,7 @@ Once you decide to interact, a handful of simple tools carry most of the weight.
 
 **traceroute** maps the path between you and the target one router at a time. Counting hops is straightforward once you remember the last hop is the destination itself, not an intermediate router, so the routers between two systems is the total hop count minus one. When a trace goes quiet partway through and shows nothing but asterisks, that is usually a firewall or CDN that stops responding, which is itself a finding.
 
-**Banner grabbing** with netcat, telnet, or curl is how you identify what software is running on an open port and what version. Many services announce themselves the moment you connect. FTP and SMTP hand you a banner immediately. For HTTP you request the headers and read the `Server` line. The version string is the payoff, because a known version can be matched against known vulnerabilities. `curl -I` for web services and `nc` for everything else cover most cases, and `nc -v` is worth remembering because verbose mode confirms the connection actually opened before the banner arrives.
+**Banner grabbing** with netcat, telnet, or curl is how you identify what software is running on an open port and what version. Many services announce themselves the moment you connect. FTP and SMTP hand you a banner immediately. For HTTP you request the headers and read the Server line. The version string is the payoff, because a known version can be matched against known vulnerabilities. curl -I for web services and nc for everything else cover most cases, and nc -v is worth remembering because verbose mode confirms the connection actually opened before the banner arrives.
 
 ## The Blue Team View
 

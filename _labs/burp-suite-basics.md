@@ -17,7 +17,7 @@ There are three editions. Community is free and manual-only - that's what this r
 
 ## Setting up the proxy
 
-To route browser traffic through Burp, I pointed Firefox at it with the FoxyProxy extension - IP `127.0.0.1`, port `8080` - then turned on Intercept in Burp's Proxy tab.
+To route browser traffic through Burp, I pointed Firefox at it with the FoxyProxy extension - IP 127.0.0.1, port 8080 - then turned on Intercept in Burp's Proxy tab.
 
 The one thing that trips you up at first is the two modes:
 
@@ -30,7 +30,7 @@ Burp also ships its own pre-configured browser (Open Browser in the Proxy tab), 
 
 The Target tab quietly builds a **site map** as you browse - a tree of every page you've hit. What I didn't expect is that its passive crawl also reads the HTML and JavaScript of each page and adds any links it finds there, including ones that aren't visible on the page.
 
-Browsing the target that way turned up an endpoint that didn't match any of the normal pages - a random path, `/5yjR2GLcoGoij2ZK`, that only appeared after loading the page that linked to it. It wasn't in the menu and I'd never have guessed it. That's the real lesson: the site map surfaces endpoints you'd miss by clicking around, because it reads what the page references, not just what you see.
+Browsing the target that way turned up an endpoint that didn't match any of the normal pages - a random path, /5yjR2GLcoGoij2ZK, that only appeared after loading the page that linked to it. It wasn't in the menu and I'd never have guessed it. That's the real lesson: the site map surfaces endpoints you'd miss by clicking around, because it reads what the page references, not just what you see.
 
 ## Scope keeps you sane
 
@@ -42,10 +42,10 @@ The target's support form had a client-side filter that blocked special characte
 
 The steps were simple:
 
-1. Fill the form in with clean data so it passes the browser's filter (email `pentester@example.thm`, some normal query text).
-2. With Intercept on, Burp catches the `POST` before it's sent.
-3. In the paused request, swap the email value for the payload `<script>alert("Succ3ssful XSS")</script>`.
-4. Select just the payload and press `Ctrl+U` to URL-encode it so the special characters travel cleanly.
+1. Fill the form in with clean data so it passes the browser's filter (email pentester@example.thm, some normal query text).
+2. With Intercept on, Burp catches the POST before it's sent.
+3. In the paused request, swap the email value for the payload &lt;script&gt;alert("Succ3ssful XSS")&lt;/script&gt;.
+4. Select just the payload and press Ctrl+U to URL-encode it so the special characters travel cleanly.
 5. Forward the request and switch back to the browser.
 
 The server reflected the payload straight back into the page and it executed:

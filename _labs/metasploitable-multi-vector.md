@@ -30,7 +30,7 @@ The lesson: real engagements always have multiple paths. Picking the *quietest* 
 nmap -p21 -sV <TARGET_IP>
 ```
 
-The banner returns *vsftpd 2.3.4*, which was distributed briefly with a backdoor: any login attempt where the *username ends in `:)`* triggers a bind shell on port 6200.
+The banner returns *vsftpd 2.3.4*, which was distributed briefly with a backdoor: any login attempt where the *username ends in :)* triggers a bind shell on port 6200.
 
 ```bash
 # in Metasploit:
@@ -110,4 +110,4 @@ nmap> !sh
 - Verify package integrity for any tool downloaded outside vendor repositories (PGP signatures, official checksums).
 - Audit Samba's *username map script* setting if it's in use. Modern Samba uses a different mechanism; explicit script execution is a smell.
 - Don't run distcc on internet-reachable hosts without a real authentication layer. The DISTCC_AUTH option exists, use it.
-- Remove SUID from nmap on every host. `chmod u-s /usr/local/bin/nmap`. The tool does not need SUID for any normal operation.
+- Remove SUID from nmap on every host. chmod u-s /usr/local/bin/nmap. The tool does not need SUID for any normal operation.

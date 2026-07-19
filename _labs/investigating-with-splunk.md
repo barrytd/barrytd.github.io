@@ -41,7 +41,7 @@ index="sysmon" host="VICTIM_01" EventCode=1
 
 The earliest unusual entry might be *winword.exe* spawning *powershell.exe*, which is the classic Office macro → PowerShell pattern (MITRE T1059.001).
 
-**Step 3 - Decode the PowerShell payload.** The command line of the spawned PowerShell shows a *long base64-encoded blob* with the `-EncodedCommand` flag. That's the standard PowerShell technique for hiding payloads in command lines.
+**Step 3 - Decode the PowerShell payload.** The command line of the spawned PowerShell shows a *long base64-encoded blob* with the -EncodedCommand flag. That's the standard PowerShell technique for hiding payloads in command lines.
 
 The encoded payload here was *double-encoded*: base64-decoding it produces *another* base64 blob, which decodes to the actual PowerShell that fetches and runs the Empire stager.
 
@@ -53,7 +53,7 @@ twice = base64.b64decode(once).decode('utf-16le')
 print(twice)
 ```
 
-The `utf-16le` decode is required because PowerShell's *EncodedCommand* expects UTF-16 little-endian internally.
+The utf-16le decode is required because PowerShell's *EncodedCommand* expects UTF-16 little-endian internally.
 
 **Step 4 - Identify the C2 server.** The decoded payload contains a URL: the attacker's PowerShell Empire C2 server. *Empire* is an open-source post-exploitation framework with a distinctive beacon pattern (periodic HTTP requests to a fixed URI with attacker-encoded data in the headers).
 

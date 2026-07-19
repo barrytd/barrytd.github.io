@@ -48,7 +48,7 @@ The failure marker *"Login failed"* tells Hydra a guess failed.
 ?theme=../../App_Data/files/PostView.ascx&a=
 ```
 
-The `..` path traversal points the theme parameter at the uploaded file. The server reads it as a theme template and runs the embedded C# code.
+The .. path traversal points the theme parameter at the uploaded file. The server reads it as a theme template and runs the embedded C# code.
 
 **Step 4 - Reverse shell payload.** The uploaded .ascx file contains a small C# snippet that runs a Windows reverse shell via *cmd.exe* and *powershell.exe*.
 
@@ -59,7 +59,7 @@ nc -lvnp 4444
 
 The callback lands as the IIS application pool user (limited).
 
-**Step 5 - Privesc enumeration.** Running `whoami /priv` and walking through *winPEAS* or *PowerUp.ps1* surfaces an interesting third-party scheduler: **WScheduler.exe** is launching **Message.exe** from `C:\Program Files (x86)\SystemScheduler`. The kicker: that directory is *world-writable*.
+**Step 5 - Privesc enumeration.** Running whoami /priv and walking through *winPEAS* or *PowerUp.ps1* surfaces an interesting third-party scheduler: **WScheduler.exe** is launching **Message.exe** from C:\Program Files (x86)\SystemScheduler. The kicker: that directory is *world-writable*.
 
 ```powershell
 icacls "C:\Program Files (x86)\SystemScheduler"
@@ -89,7 +89,7 @@ When the scheduler fires next, the payload runs as SYSTEM and a Meterpreter call
 ## What a Defender Should Do
 
 - Patch BlogEngine.NET to the current version, or move off it entirely (the project is sparsely maintained). CVE-2019-6714 is from 2019 and a working public exploit exists.
-- Audit ACLs on every `C:\Program Files` directory regularly. Anything writable by non-admin users is a privesc waiting to happen. *icacls* against every Program Files directory is a one-line check.
+- Audit ACLs on every C:\Program Files directory regularly. Anything writable by non-admin users is a privesc waiting to happen. *icacls* against every Program Files directory is a one-line check.
 - Run service accounts with the minimum privilege they actually need. WScheduler did not need SYSTEM; a dedicated service account would have meant *"compromise the scheduler"* equals *"that one account"*, not *"the whole box."*
 - Set strong password policies and rate-limit the login endpoint at the WAF or app layer. Hydra is only effective when the target accepts unlimited attempts.
-- Monitor for new executables in service directories. Sysmon EventID 11 (FileCreate) on `C:\Program Files` is high-signal.
+- Monitor for new executables in service directories. Sysmon EventID 11 (FileCreate) on C:\Program Files is high-signal.

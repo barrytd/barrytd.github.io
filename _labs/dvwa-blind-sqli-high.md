@@ -45,7 +45,7 @@ If the first character of admin's password is *a*, the AND is true, the row matc
 
 **Step 5 - Walk the string.** Once the first character is recovered, change the SUBSTRING offset to 2 and repeat. Then 3, 4, ... until the full string is extracted. For a 32-character MD5 hash, that's 32 × 36 = 1152 requests.
 
-**Step 6 - Scope reduction.** Each character has 36 possibilities (lowercase + digits) for an MD5 hex hash. Binary search (`<` and `>` comparisons) reduces that to ~6 requests per character, or 192 total instead of 1152.
+**Step 6 - Scope reduction.** Each character has 36 possibilities (lowercase + digits) for an MD5 hex hash. Binary search (&lt; and &gt; comparisons) reduces that to ~6 requests per character, or 192 total instead of 1152.
 
 ```sql
 1' AND (SELECT 1 FROM users WHERE ASCII(SUBSTRING(password,1,1)) < 100 AND username='admin') --

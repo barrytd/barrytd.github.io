@@ -27,19 +27,19 @@ The first thing to understand for the cloud half of this room: **AWS CloudTrail*
 
 The fields that matter:
 
-- `userIdentity.userName` is who made the call.
-- `eventName` is what they did (CreateBucket, PutBucketAcl, CreateAccessKey).
-- `requestParameters` is the detail of the call.
-- `userAgent` is the application they used.
-- `userIdentity.sessionContext.attributes.mfaAuthenticated` says whether the session used multi-factor authentication.
+- userIdentity.userName is who made the call.
+- eventName is what they did (CreateBucket, PutBucketAcl, CreateAccessKey).
+- requestParameters is the detail of the call.
+- userAgent is the application they used.
+- userIdentity.sessionContext.attributes.mfaAuthenticated says whether the session used multi-factor authentication.
 
 Once I knew those five fields, the AWS questions felt like the same pivoting rhythm as the Windows ones. Find a value, pivot to the next query with it.
 
 ## The S3 Bucket That Went Public
 
-The clearest lesson in the room. **S3** is AWS file storage. Each bucket has an **ACL** (access control list) that decides who can read and write it. The CloudTrail event `PutBucketAcl` records every change to that ACL.
+The clearest lesson in the room. **S3** is AWS file storage. Each bucket has an **ACL** (access control list) that decides who can read and write it. The CloudTrail event PutBucketAcl records every change to that ACL.
 
-There were two `PutBucketAcl` events on the same bucket. At the event-name level they looked identical. The difference was in the ACL body:
+There were two PutBucketAcl events on the same bucket. At the event-name level they looked identical. The difference was in the ACL body:
 
 - One event granted the **AllUsers** group **WRITE** permission. AllUsers means *anyone on the internet*. That is what makes a bucket public.
 - The other event had an empty ACL. That was someone revoking the public access.
@@ -52,11 +52,11 @@ While the bucket was public, an outsider uploaded a text file to it. The filenam
 
 The single best habit this room reinforced.
 
-One IAM access key was generating a lot of distinct `AccessDenied` errors. That pattern, one key failing many different API calls, is what a stolen key looks like when an attacker is probing what it can do.
+One IAM access key was generating a lot of distinct AccessDenied errors. That pattern, one key failing many different API calls, is what a stolen key looks like when an attacker is probing what it can do.
 
 AWS noticed it too. AWS proactively emails account owners when it detects a leaked credential. That email was in the dataset, and it contained a **GitHub URL**.
 
-Following the URL led to a public Frothly repository with a file named `aws_credentials.bak`. The plaintext secret key was sitting in it. Someone had committed credentials to a public repo.
+Following the URL led to a public Frothly repository with a file named aws_credentials.bak. The plaintext secret key was sitting in it. Someone had committed credentials to a public repo.
 
 The decisive evidence was not in Splunk. It was in a GitHub repo that an email pointed to. If I had not clicked the link, I would have missed it. Click every URL in every email and log.
 
@@ -74,26 +74,26 @@ Filtering is subtraction. Every filter you add removes events. If you filter on 
 
 The cryptomining thread was a different kind of pivot. Mining is invisible in most logs because it does not touch the network in an obvious way or create files. What it does is **burn CPU**.
 
-The `perfmonmk:process` sourcetype records per-process CPU usage. Filtering for processes sitting at 100 percent CPU (after excluding the `_Total` and `Idle` pseudo-processes) surfaced the miner. It was a browser process, which means browser-based mining: a malicious site or extension running a miner in JavaScript.
+The perfmonmk:process sourcetype records per-process CPU usage. Filtering for processes sitting at 100 percent CPU (after excluding the _Total and Idle pseudo-processes) surfaced the miner. It was a browser process, which means browser-based mining: a malicious site or extension running a miner in JavaScript.
 
 The lesson: when an attack does not show up in the logs you expect, think about what resource it *must* consume. Mining must use CPU. That makes performance data the right place to look.
 
 ## Attribution From A User-Agent String
 
-The APT half of the room reused the Taedonggang group from BOTSv2. One artifact was a malicious file uploaded to OneDrive. The Office 365 audit log recorded the upload, including the `UserAgent` of whoever did it.
+The APT half of the room reused the Taedonggang group from BOTSv2. One artifact was a malicious file uploaded to OneDrive. The Office 365 audit log recorded the upload, including the UserAgent of whoever did it.
 
-The user-agent string contained `ko-KP` and `NaenaraBrowser`. `ko-KP` is the locale code for Korean as used in North Korea. NaenaraBrowser is the official state-developed web browser of North Korea. A web browser almost nobody outside that country runs.
+The user-agent string contained ko-KP and NaenaraBrowser. ko-KP is the locale code for Korean as used in North Korea. NaenaraBrowser is the official state-developed web browser of North Korea. A web browser almost nobody outside that country runs.
 
 That one string is strong attribution evidence. A field most people scroll past tied the activity to a specific nation-state group.
 
 ## General Lessons
 
-- CloudTrail is the AWS security log. Learn `userIdentity`, `eventName`, `requestParameters`, `userAgent`, and the MFA field and the cloud side stops being intimidating.
+- CloudTrail is the AWS security log. Learn userIdentity, eventName, requestParameters, userAgent, and the MFA field and the cloud side stops being intimidating.
 - Read the detail of an event, not just its name. Two events with the same name did opposite things.
 - Follow every URL in every email and log. The key evidence was in a GitHub repo, not in Splunk.
 - Over-filtering hides evidence. Start broad, narrow gradually.
 - When an attack is invisible in the obvious logs, think about what resource it has to consume. Mining burns CPU, so look at performance data.
-- A user-agent string can carry attribution. `ko-KP` and NaenaraBrowser pointed straight at a North Korean group.
+- A user-agent string can carry attribution. ko-KP and NaenaraBrowser pointed straight at a North Korean group.
 
 ## What I'd Tell A Beginner
 

@@ -23,19 +23,19 @@ Telnet is almost never used as a remote-access protocol anymore, because it is i
 telnet TARGET_IP PORT
 ```
 
-That single command lets you talk to a web server, a mail server, or a file server and watch the exact request and response. `netcat` (`nc`) does the same job and is often preferred, but the idea is identical. This is the same skill as banner grabbing: connect to a service and read what it says about itself.
+That single command lets you talk to a web server, a mail server, or a file server and watch the exact request and response. netcat (nc) does the same job and is often preferred, but the idea is identical. This is the same skill as banner grabbing: connect to a service and read what it says about itself.
 
 ## Walking Through Each Protocol
 
-**HTTP on port 80** is a request-and-response text protocol. You connect, send a `GET` line and a `Host` header, leave a blank line to signal the request is finished, and the server sends back headers plus the page. Doing it by hand once makes it clear that a browser is just automating these same lines.
+**HTTP on port 80** is a request-and-response text protocol. You connect, send a GET line and a Host header, leave a blank line to signal the request is finished, and the server sends back headers plus the page. Doing it by hand once makes it clear that a browser is just automating these same lines.
 
 **FTP on port 21** handles file transfer. You log in with a username and password, list files, and download them. The catch worth remembering is that FTP uses a separate data connection for the actual transfer, which is why a listing sometimes hangs until you switch to passive mode. Both the login and the files move in cleartext.
 
-**SMTP on port 25** moves mail between servers. Connect and the server greets you with a banner starting with `220`. SMTP is the protocol behind email spoofing tests and open relay checks, because a misconfigured mail server will happily relay mail for anyone, which spammers abuse.
+**SMTP on port 25** moves mail between servers. Connect and the server greets you with a banner starting with 220. SMTP is the protocol behind email spoofing tests and open relay checks, because a misconfigured mail server will happily relay mail for anyone, which spammers abuse.
 
-**POP3 on port 110** downloads mail to a client. You authenticate with `USER` and `PASS`, then `STAT` reports how many messages are waiting and their total size, and `RETR` pulls one down. POP3's default behavior is download and delete: the message lands on your device and is removed from the server.
+**POP3 on port 110** downloads mail to a client. You authenticate with USER and PASS, then STAT reports how many messages are waiting and their total size, and RETR pulls one down. POP3's default behavior is download and delete: the message lands on your device and is removed from the server.
 
-**IMAP on port 143** also reads mail, but it keeps everything on the server and syncs state across devices. Read and unread flags, folders, and deletions all live server-side. One quirk when you drive it by hand: every IMAP command needs a short tag in front of it, like `c1 LOGIN`, so the client can match replies to commands.
+**IMAP on port 143** also reads mail, but it keeps everything on the server and syncs state across devices. Read and unread flags, folders, and deletions all live server-side. One quirk when you drive it by hand: every IMAP command needs a short tag in front of it, like c1 LOGIN, so the client can match replies to commands.
 
 ## Why POP3 Versus IMAP Matters to an Attacker
 
@@ -56,7 +56,7 @@ Each cleartext protocol has an encrypted counterpart, usually on its own port. T
 
 ## The Blue Team View
 
-The defensive side is straightforward and mostly about not running the plain versions where they can be sniffed. Use the encrypted variant everywhere: HTTPS, SFTP, SMTP with STARTTLS, POP3S, IMAPS, and SSH instead of telnet. Where a legacy system forces cleartext, keep it off any segment an attacker could reach and watch for `USER`/`PASS` or `LOGIN` commands crossing the wire in plain text, because seeing them at all means credentials are exposed. The single highest-value habit is treating any cleartext authentication on the network as already-compromised credentials.
+The defensive side is straightforward and mostly about not running the plain versions where they can be sniffed. Use the encrypted variant everywhere: HTTPS, SFTP, SMTP with STARTTLS, POP3S, IMAPS, and SSH instead of telnet. Where a legacy system forces cleartext, keep it off any segment an attacker could reach and watch for USER/PASS or LOGIN commands crossing the wire in plain text, because seeing them at all means credentials are exposed. The single highest-value habit is treating any cleartext authentication on the network as already-compromised credentials.
 
 ## Key Takeaways
 
