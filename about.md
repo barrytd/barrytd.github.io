@@ -5,12 +5,12 @@ subtitle: Who I am, what I work with, and why this site exists.
 permalink: /about/
 ---
 
-I'm **Robert Perez**, a security-focused QA / Test Engineer at **Topflight Apps** moving into defensive security. I'm finishing a B.S. in Cybersecurity and Information Assurance at **WGU** (expected Dec 2026), and I work across the blue team and offensive sides of security, with a focus on SIEM-based detection, Active Directory attacks, and Windows internals. I'm aiming for SOC analyst work.
+I'm **Robert Perez**, a QA / Test Engineer at **Topflight Apps** moving into security. I'm finishing a B.S. in Cybersecurity and Information Assurance at **WGU** (expected Dec 2026), and I spend my own time working across the blue team and offensive sides of security, with a focus on SIEM-based detection, Active Directory attacks, and Windows internals. I'm aiming for SOC analyst work.
 
 ## Experience
 
 **Topflight Apps** — QA / Test Engineer (contract) · 2026 – present
-Security-focused testing across mobile and web applications on two concurrent client projects. I build automated test suites and run manual testing, and work directly with developers and stakeholders to ship quality, secure releases.
+Manual and automated QA across mobile and web applications on two concurrent client projects. I build automated test suites and run manual testing, and work directly with developers and stakeholders to ship quality releases. When access-control or permissions issues (RBAC and similar) come up in testing, I flag them and track them in ClickUp through to resolution.
 
 This site is the **plain-English companion** to my [security-lab-portfolio](https://github.com/barrytd/security-lab-portfolio) repository on GitHub. The repo holds the detailed walkthroughs; this site translates them into beginner-friendly writeups that emphasize **concepts and methodology** over flag values.
 
