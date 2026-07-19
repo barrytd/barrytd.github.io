@@ -21,7 +21,7 @@ This site is the **plain-English companion** to my [security-lab-portfolio](http
 - **GitHub:** [github.com/barrytd](https://github.com/barrytd)
 - **LinkedIn:** [robert-perezpereda](https://www.linkedin.com/in/robert-perezpereda/)
 - **TryHackMe:** [bxrry](https://tryhackme.com/p/bxrry)
-- **Resume:** *(PDF link to add — drop the file in `/assets/robert-perez-resume.pdf` and update this line)*
+- **Resume:** [robert-perez-resume.pdf]({{ '/assets/robert-perez-resume.pdf' | relative_url }})
 - **Email:** through LinkedIn DM or [opening an issue on the portfolio repo](https://github.com/barrytd/security-lab-portfolio/issues)
 
 ## Certifications
