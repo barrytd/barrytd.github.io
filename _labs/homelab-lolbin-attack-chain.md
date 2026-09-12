@@ -4,6 +4,8 @@ date: 2026-09-12
 platform: Self-built
 difficulty: Medium
 category: blue-team
+featured: true
+featured_order: 2
 summary: "I built a small Active Directory lab, ran a real attack against a Windows machine, and then caught every step of it in Splunk. This writeup walks through the attack and the detection in plain language."
 ---
 
